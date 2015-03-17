@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+xmlns="http://www.mulesoft.org/schema/mule/core" 
+xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
+xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+xmlns:spring="http://www.springframework.org/schema/beans" 
+version="EE-3.6.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+    
+    <flow name="triggerFlow" >
+        <sfdc:subscribe-topic config-ref="Salesforce" topic="/ClosedWon" doc:name="Salesforce Opportunities (Streaming)"/>
+        <set-variable variableName="SFDC_Opp" value="#[payload]" doc:name="save Opportunity"/>
+        <logger message="incoming SFDC opportunity: #[payload]" level="INFO" doc:name="log created/updated Opportunities"/>
+        <expression-filter expression="#[payload['AccountId'] != null]" doc:name="Filter opportunities without accounts"/>
+        <flow-ref name="syncCustomerFlow" doc:name="trigger syncCustomer Flow"/>
+    </flow>
+
+	<!-- 	In this file you should declare all your inbound endpoints and from here control the access to your application -->
+    
+</mule>

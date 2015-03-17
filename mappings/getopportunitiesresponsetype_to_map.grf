@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph __version="3.5.0" author="edwinkwan" created="Fri Mar 06 11:34:09 PST 2015" description="GetOpportunitiesResponseType To Map" guiVersion="3.4.4.P" id="1425920447550" licenseCode="Unlicensed" licenseType="Unknown" modified="Fri Mar 06 11:34:09 PST 2015" modifiedBy="edwinkwan" name="GetOpportunitiesResponseType_To_Map" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="0" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="51a39e17-36d3-4b9e-bd06-e1cfa6b49f1a">
+<Record fieldDelimiter="," name="GetOpportunitiesResponseType" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="66" __sourcePath="{}/object/version" containerType="SINGLE" label="version" name="version" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="0" __sourcePath="{}/object/requestCriteria/companyReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="42349093-9dd0-4dca-a68c-e7a3933e8066" _parent_id="__parent_id" _type="Input" id="a46920ac-80e0-4272-a441-c06180135a9f">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/requestCriteria/companyReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="1" __sourcePath="{}/object/requestCriteria/companyReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="3" __referenceCounter="0" __sourcePath="{}/object/requestCriteria/customerRequestReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="42349093-9dd0-4dca-a68c-e7a3933e8066" _parent_id="__parent_id" _type="Input" id="1aecdc4f-aea6-4315-9d4b-90ecdba7b0de">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="3" __sourcePath="{}/object/requestCriteria/customerRequestReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="4" __sourcePath="{}/object/requestCriteria/customerRequestReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="6" __referenceCounter="0" __sourcePath="{}/object/requestCriteria/eventReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="42349093-9dd0-4dca-a68c-e7a3933e8066" _parent_id="__parent_id" _type="Input" id="f34b532b-4f43-4304-af47-f41c1d6783a2">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="6" __sourcePath="{}/object/requestCriteria/eventReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="7" __sourcePath="{}/object/requestCriteria/eventReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="10" __referenceCounter="0" __sourcePath="{}/object/requestCriteria/prospectReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="42349093-9dd0-4dca-a68c-e7a3933e8066" _parent_id="__parent_id" _type="Input" id="454821ff-36ad-456c-b316-d68d625ba534">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="10" __sourcePath="{}/object/requestCriteria/prospectReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="11" __sourcePath="{}/object/requestCriteria/prospectReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="13" __referenceCounter="0" __sourcePath="{}/object/requestCriteria/reportingTransactionReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="42349093-9dd0-4dca-a68c-e7a3933e8066" _parent_id="__parent_id" _type="Input" id="7d2d6978-ef84-4a63-91ef-d498cdf9a3ae">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="13" __sourcePath="{}/object/requestCriteria/reportingTransactionReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="14" __sourcePath="{}/object/requestCriteria/reportingTransactionReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="16" __referenceCounter="0" __sourcePath="{}/object/requestReferences/opportunityReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="f4223e99-9bef-467b-a19d-4104464a10d7" _parent_id="__parent_id" _type="Input" id="1a2074da-1a1c-4e98-a4c7-6eb4c307cb0f">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="16" __sourcePath="{}/object/requestReferences/opportunityReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="17" __sourcePath="{}/object/requestReferences/opportunityReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="21" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/companyReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="e659d05f-6977-4420-a0b4-6a00a4f3da07">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="21" __sourcePath="{}/object/responseData/opportunity/opportunityData/companyReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="22" __sourcePath="{}/object/responseData/opportunity/opportunityData/companyReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="24" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/currencyReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="53547b99-4637-4d72-89e5-30bf763d8a79">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="24" __sourcePath="{}/object/responseData/opportunity/opportunityData/currencyReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="25" __sourcePath="{}/object/responseData/opportunity/opportunityData/currencyReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="27" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="8b2d310a-700b-4fe7-a8f7-ae51cd821cd7">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="27" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="28" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="30" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerRequestReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="13ed32c4-9cc4-4c85-a3e6-ed040991cd7c">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="30" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerRequestReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="31" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerRequestReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="45" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityStatusReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="00367ba0-d23e-4aa9-b064-5a8c61ef494d">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="45" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityStatusReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="46" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityStatusReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="48" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/prospectReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="4d017baf-2f72-4a84-8856-55e052a8f57c">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="48" __sourcePath="{}/object/responseData/opportunity/opportunityData/prospectReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="49" __sourcePath="{}/object/responseData/opportunity/opportunityData/prospectReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="52" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityReference/ID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="e73dc838-ba89-47f4-b668-ccc737fd4229">
+<Record fieldDelimiter="," name="ID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="52" __sourcePath="{}/object/responseData/opportunity/opportunityReference/ID/type" containerType="SINGLE" label="type" name="type" type="string"/>
+<Field __index="53" __sourcePath="{}/object/responseData/opportunity/opportunityReference/ID/value" containerType="SINGLE" label="value" name="value" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Opp_x005fUpdate" _dataStructure="OBJECT" _id="__id" _type="Output" id="754bbf9b-75e6-4561-8d4c-ee75c7b734ad">
+<Record fieldDelimiter="," name="Opp_Update" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/Opp_x005fUpdate/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+<Field __index="1" __sourcePath="{}/Opp_x005fUpdate/Workday_Sync__c" containerType="SINGLE" label="Workday_Sync__c" name="Workday_Sync__c" type="boolean"/>
+</Record>
+</Metadata>
+<Metadata __index="19" __referenceCounter="1" __sourcePath="{}/object/responseData/opportunity" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="90d785d2-133c-47ce-ab5b-4aea9f303c16" _parent_id="__parent_id" _type="Input" id="e532fbe3-2019-413f-a677-fd6466d83a17">
+<Record fieldDelimiter="," name="opportunity" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="23" __sourcePath="{}/object/responseData/opportunity/opportunityData/companyReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor" type="string"/>
+<Field __index="26" __sourcePath="{}/object/responseData/opportunity/opportunityData/currencyReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_1" type="string"/>
+<Field __index="29" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_2" type="string"/>
+<Field __index="32" __sourcePath="{}/object/responseData/opportunity/opportunityData/customerRequestReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_3" type="string"/>
+<Field __index="33" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityID" containerType="SINGLE" label="opportunityID" name="opportunityID" type="string"/>
+<Field __index="44" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityName" containerType="SINGLE" label="opportunityName" name="opportunityName" type="string"/>
+<Field __index="47" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityStatusReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_4" type="string"/>
+<Field __index="50" __sourcePath="{}/object/responseData/opportunity/opportunityData/prospectReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_5" type="string"/>
+<Field __index="51" __sourcePath="{}/object/responseData/opportunity/opportunityData/updateOpportunityOnly" containerType="SINGLE" label="updateOpportunityOnly" name="updateOpportunityOnly" type="boolean"/>
+<Field __index="54" __sourcePath="{}/object/responseData/opportunity/opportunityReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_6" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="19" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityCostData" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="59349a83-4965-4ffc-8b45-aa1f504bf82e">
+<Record fieldDelimiter="," name="opportunityCostData" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="19" __sourcePath="{}/object/responseData/opportunity/opportunityCostData/currencyReference/currencyCode" containerType="SINGLE" label="currencyCode" name="currencyCode" type="string"/>
+<Field __index="20" __sourcePath="{}/object/responseData/opportunity/opportunityCostData/opportunityCost" containerType="SINGLE" label="opportunityCost" name="opportunityCost" type="decimal"/>
+</Record>
+</Metadata>
+<Metadata __index="34" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e532fbe3-2019-413f-a677-fd6466d83a17" _parent_id="__parent_id" _type="Input" id="696ea348-01f0-419f-890b-26adf199ea33">
+<Record fieldDelimiter="," name="opportunityLineReplacementData" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="38" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/productCode" containerType="SINGLE" label="productCode" name="productCode" type="string"/>
+<Field __index="39" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/productDescription" containerType="SINGLE" label="productDescription" name="productDescription" type="string"/>
+<Field __index="40" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/productName" containerType="SINGLE" label="productName" name="productName" type="string"/>
+<Field __index="41" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/quantity" containerType="SINGLE" label="quantity" name="quantity" type="decimal"/>
+<Field __index="42" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/revenueCategory" containerType="SINGLE" label="revenueCategory" name="revenueCategory" type="string"/>
+<Field __index="43" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/unitCost" containerType="SINGLE" label="unitCost" name="unitCost" type="decimal"/>
+</Record>
+</Metadata>
+<Metadata __index="34" __referenceCounter="0" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/opportunityLineScheduleReplacementData" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="696ea348-01f0-419f-890b-26adf199ea33" _parent_id="__parent_id" _type="Input" id="fc5a8cd9-1fb2-4a59-8f1d-778a884d87ae">
+<Record fieldDelimiter="," name="opportunityLineScheduleReplacementData" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="34" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/opportunityLineScheduleReplacementData/billingScheduleLineAmount" containerType="SINGLE" label="billingScheduleLineAmount" name="billingScheduleLineAmount" type="decimal"/>
+<Field __index="35" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/opportunityLineScheduleReplacementData/billingScheduleLineQuantity" containerType="SINGLE" label="billingScheduleLineQuantity" name="billingScheduleLineQuantity" type="decimal"/>
+<Field __index="36" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/opportunityLineScheduleReplacementData/recurringScheduleComment" containerType="SINGLE" label="recurringScheduleComment" name="recurringScheduleComment" type="string"/>
+<Field __dmType="Calendar" __index="37" __sourcePath="{}/object/responseData/opportunity/opportunityData/opportunityLineReplacementData/opportunityLineScheduleReplacementData/recurringScheduleDate" containerType="SINGLE" label="recurringScheduleDate" name="recurringScheduleDate" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="16" __referenceCounter="0" __sourcePath="{}/object/requestReferences/opportunityReference" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="5f757880-81b4-4729-bcf9-7a2b20be83f1" _parent_id="__parent_id" _type="Input" id="f4223e99-9bef-467b-a19d-4104464a10d7">
+<Record fieldDelimiter="," name="opportunityReference" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="18" __sourcePath="{}/object/requestReferences/opportunityReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="0" __sourcePath="{}/object/requestCriteria" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="51a39e17-36d3-4b9e-bd06-e1cfa6b49f1a" _parent_id="__parent_id" _type="Input" id="42349093-9dd0-4dca-a68c-e7a3933e8066">
+<Record fieldDelimiter="," name="requestCriteria" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="2" __sourcePath="{}/object/requestCriteria/companyReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor" type="string"/>
+<Field __index="5" __sourcePath="{}/object/requestCriteria/customerRequestReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_1" type="string"/>
+<Field __index="8" __sourcePath="{}/object/requestCriteria/eventReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_2" type="string"/>
+<Field __index="9" __sourcePath="{}/object/requestCriteria/opportunityName" containerType="SINGLE" label="opportunityName" name="opportunityName" type="string"/>
+<Field __index="12" __sourcePath="{}/object/requestCriteria/prospectReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_3" type="string"/>
+<Field __index="15" __sourcePath="{}/object/requestCriteria/reportingTransactionReference/descriptor" containerType="SINGLE" label="descriptor" name="descriptor_4" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="16" __referenceCounter="0" __sourcePath="{}/object/requestReferences" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="51a39e17-36d3-4b9e-bd06-e1cfa6b49f1a" _parent_id="__parent_id" _type="Input" id="5f757880-81b4-4729-bcf9-7a2b20be83f1">
+<Record fieldDelimiter="," name="requestReferences" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="19" __referenceCounter="0" __sourcePath="{}/object/responseData" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="51a39e17-36d3-4b9e-bd06-e1cfa6b49f1a" _parent_id="__parent_id" _type="Input" id="90d785d2-133c-47ce-ab5b-4aea9f303c16">
+<Record fieldDelimiter="," name="responseData" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="55" __referenceCounter="0" __sourcePath="{}/object/responseFilter" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="51a39e17-36d3-4b9e-bd06-e1cfa6b49f1a" _parent_id="__parent_id" _type="Input" id="cb1be05f-7fa7-4172-be0a-06bc4d85d0b3">
+<Record fieldDelimiter="," name="responseFilter" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __dmType="Calendar" __index="55" __sourcePath="{}/object/responseFilter/asOfEffectiveDate" containerType="SINGLE" label="asOfEffectiveDate" name="asOfEffectiveDate" type="string"/>
+<Field __dmType="Calendar" __index="56" __sourcePath="{}/object/responseFilter/asOfEntryDateTime" containerType="SINGLE" label="asOfEntryDateTime" name="asOfEntryDateTime" type="string"/>
+<Field __index="57" __sourcePath="{}/object/responseFilter/count" containerType="SINGLE" label="count" name="count" type="decimal"/>
+<Field __index="58" __sourcePath="{}/object/responseFilter/page" containerType="SINGLE" label="page" name="page" type="decimal"/>
+</Record>
+</Metadata>
+<Metadata __index="59" __referenceCounter="0" __sourcePath="{}/object/responseGroup" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="51a39e17-36d3-4b9e-bd06-e1cfa6b49f1a" _parent_id="__parent_id" _type="Input" id="4c43ed0b-c2ba-4986-a960-e0ee938c19e0">
+<Record fieldDelimiter="," name="responseGroup" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="59" __sourcePath="{}/object/responseGroup/includeOpportunityCostData" containerType="SINGLE" label="includeOpportunityCostData" name="includeOpportunityCostData" type="boolean"/>
+<Field __index="60" __sourcePath="{}/object/responseGroup/includeOpportunityData" containerType="SINGLE" label="includeOpportunityData" name="includeOpportunityData" type="boolean"/>
+<Field __index="61" __sourcePath="{}/object/responseGroup/includeReference" containerType="SINGLE" label="includeReference" name="includeReference" type="boolean"/>
+</Record>
+</Metadata>
+<Metadata __index="62" __referenceCounter="0" __sourcePath="{}/object/responseResults" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="51a39e17-36d3-4b9e-bd06-e1cfa6b49f1a" _parent_id="__parent_id" _type="Input" id="62c9ff4d-dd71-4fd9-bd5b-4ada9d2c1a6a">
+<Record fieldDelimiter="," name="responseResults" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="62" __sourcePath="{}/object/responseResults/page" containerType="SINGLE" label="page" name="page" type="decimal"/>
+<Field __index="63" __sourcePath="{}/object/responseResults/pageResults" containerType="SINGLE" label="pageResults" name="pageResults" type="decimal"/>
+<Field __index="64" __sourcePath="{}/object/responseResults/totalPages" containerType="SINGLE" label="totalPages" name="totalPages" type="decimal"/>
+<Field __index="65" __sourcePath="{}/object/responseResults/totalResults" containerType="SINGLE" label="totalResults" name="totalResults" type="decimal"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Pojo READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath="./responseData/opportunity">
+  <Mapping cloverField="descriptor" trim="true" xpath="opportunityData/companyReference/descriptor"/>
+  <Mapping cloverField="descriptor_1" trim="true" xpath="opportunityData/currencyReference/descriptor"/>
+  <Mapping cloverField="descriptor_2" trim="true" xpath="opportunityData/customerReference/descriptor"/>
+  <Mapping cloverField="descriptor_3" trim="true" xpath="opportunityData/customerRequestReference/descriptor"/>
+  <Mapping cloverField="opportunityID" trim="true" xpath="opportunityData/opportunityID"/>
+  <Mapping cloverField="opportunityName" trim="true" xpath="opportunityData/opportunityName"/>
+  <Mapping cloverField="descriptor_4" trim="true" xpath="opportunityData/opportunityStatusReference/descriptor"/>
+  <Mapping cloverField="descriptor_5" trim="true" xpath="opportunityData/prospectReference/descriptor"/>
+  <Mapping cloverField="updateOpportunityOnly" trim="true" xpath="opportunityData/updateOpportunityOnly"/>
+  <Mapping cloverField="descriptor_6" trim="true" xpath="opportunityReference/descriptor"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[JAVA]]></attr>
+<attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<schema-object>
+  <typed-object-ref type-ref="com.workday.revenue.GetOpportunitiesResponseType"/>
+  <typed-object type="com.workday.revenue.OpportunityResponseDataType">
+    <schema-collection name="opportunity" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityType"/>
+    </schema-collection>
+  </typed-object>
+  <typed-object type="com.workday.revenue.TransactionLogObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.TransactionLogObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityStatusObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.CompanyObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.CompanyObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="java.lang.Boolean"/>
+  <typed-object type="com.workday.revenue.OpportunityStatusObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityStatusObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.CustomerRequestObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.ProspectObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.ProspectObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.TransactionLogObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityRequestCriteriaType">
+    <typed-object-ref name="companyReference" type-ref="com.workday.revenue.CompanyObjectType"/>
+    <typed-object-ref name="customerRequestReference" type-ref="com.workday.revenue.CustomerRequestObjectType"/>
+    <typed-object-ref name="eventReference" type-ref="com.workday.revenue.TransactionLogObjectType"/>
+    <typed-object-ref name="opportunityName" type-ref="java.lang.String"/>
+    <typed-object-ref name="prospectReference" type-ref="com.workday.revenue.ProspectObjectType"/>
+    <typed-object-ref name="reportingTransactionReference" type-ref="com.workday.revenue.ReportingTransactionObjectType"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.GetOpportunitiesResponseType">
+    <schema-collection name="requestCriteria" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityRequestCriteriaType"/>
+    </schema-collection>
+    <schema-collection name="requestReferences" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityRequestReferencesType"/>
+    </schema-collection>
+    <schema-collection name="responseData" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityResponseDataType"/>
+    </schema-collection>
+    <schema-collection name="responseFilter" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.ResponseFilterType"/>
+    </schema-collection>
+    <schema-collection name="responseGroup" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityResponseGroupType"/>
+    </schema-collection>
+    <schema-collection name="responseResults" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.ResponseResultsType"/>
+    </schema-collection>
+    <typed-object-ref name="version" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.ResponseFilterType">
+    <typed-object-ref name="asOfEffectiveDate" type-ref="javax.xml.datatype.XMLGregorianCalendar"/>
+    <typed-object-ref name="asOfEntryDateTime" type-ref="javax.xml.datatype.XMLGregorianCalendar"/>
+    <typed-object-ref name="count" type-ref="java.math.BigDecimal"/>
+    <typed-object-ref name="page" type-ref="java.math.BigDecimal"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.CurrencyReferenceDataType">
+    <typed-object-ref name="currencyCode" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityType">
+    <schema-collection name="opportunityCostData" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityCostDataType"/>
+    </schema-collection>
+    <typed-object-ref name="opportunityData" type-ref="com.workday.revenue.OpportunityDataType"/>
+    <typed-object-ref name="opportunityReference" type-ref="com.workday.revenue.OpportunityObjectType"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.InvoicingScheduleLineForOpportunityLineDataType">
+    <typed-object-ref name="billingScheduleLineAmount" type-ref="java.math.BigDecimal"/>
+    <typed-object-ref name="billingScheduleLineQuantity" type-ref="java.math.BigDecimal"/>
+    <typed-object-ref name="recurringScheduleComment" type-ref="java.lang.String"/>
+    <typed-object-ref name="recurringScheduleDate" type-ref="javax.xml.datatype.XMLGregorianCalendar"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityRequestReferencesType">
+    <schema-collection name="opportunityReference" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityObjectType"/>
+    </schema-collection>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityCostDataType">
+    <typed-object-ref name="currencyReference" type-ref="com.workday.revenue.CurrencyReferenceDataType"/>
+    <typed-object-ref name="opportunityCost" type-ref="java.math.BigDecimal"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.CustomerObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.CustomerObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityLineDataType">
+    <schema-collection name="opportunityLineScheduleReplacementData" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.InvoicingScheduleLineForOpportunityLineDataType"/>
+    </schema-collection>
+    <typed-object-ref name="productCode" type-ref="java.lang.String"/>
+    <typed-object-ref name="productDescription" type-ref="java.lang.String"/>
+    <typed-object-ref name="productName" type-ref="java.lang.String"/>
+    <typed-object-ref name="quantity" type-ref="java.math.BigDecimal"/>
+    <typed-object-ref name="revenueCategory" type-ref="java.lang.String"/>
+    <typed-object-ref name="unitCost" type-ref="java.math.BigDecimal"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.CustomerObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.CompanyObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityResponseGroupType">
+    <typed-object-ref name="includeOpportunityCostData" type-ref="java.lang.Boolean"/>
+    <typed-object-ref name="includeOpportunityData" type-ref="java.lang.Boolean"/>
+    <typed-object-ref name="includeReference" type-ref="java.lang.Boolean"/>
+  </typed-object>
+  <typed-object type="javax.xml.datatype.XMLGregorianCalendar"/>
+  <typed-object type="com.workday.revenue.CurrencyObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.CurrencyObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.ProspectObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="java.lang.String"/>
+  <typed-object type="com.workday.revenue.OpportunityDataType">
+    <typed-object-ref name="companyReference" type-ref="com.workday.revenue.CompanyObjectType"/>
+    <typed-object-ref name="currencyReference" type-ref="com.workday.revenue.CurrencyObjectType"/>
+    <typed-object-ref name="customerReference" type-ref="com.workday.revenue.CustomerObjectType"/>
+    <typed-object-ref name="customerRequestReference" type-ref="com.workday.revenue.CustomerRequestObjectType"/>
+    <typed-object-ref name="opportunityID" type-ref="java.lang.String"/>
+    <schema-collection name="opportunityLineReplacementData" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityLineDataType"/>
+    </schema-collection>
+    <typed-object-ref name="opportunityName" type-ref="java.lang.String"/>
+    <typed-object-ref name="opportunityStatusReference" type-ref="com.workday.revenue.OpportunityStatusObjectType"/>
+    <typed-object-ref name="prospectReference" type-ref="com.workday.revenue.ProspectObjectType"/>
+    <typed-object-ref name="updateOpportunityOnly" type-ref="java.lang.Boolean"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.ResponseResultsType">
+    <typed-object-ref name="page" type-ref="java.math.BigDecimal"/>
+    <typed-object-ref name="pageResults" type-ref="java.math.BigDecimal"/>
+    <typed-object-ref name="totalPages" type-ref="java.math.BigDecimal"/>
+    <typed-object-ref name="totalResults" type-ref="java.math.BigDecimal"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.ReportingTransactionObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.ReportingTransactionObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.CurrencyObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.OpportunityObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.OpportunityObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="com.workday.revenue.ReportingTransactionObjectIDType">
+    <typed-object-ref name="type" type-ref="java.lang.String"/>
+    <typed-object-ref name="value" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="java.math.BigDecimal"/>
+  <typed-object type="com.workday.revenue.CustomerRequestObjectType">
+    <schema-collection name="ID" type="java.util.List">
+      <typed-object-ref type-ref="com.workday.revenue.CustomerRequestObjectIDType"/>
+    </schema-collection>
+    <typed-object-ref name="descriptor" type-ref="java.lang.String"/>
+  </typed-object>
+</schema-object>
+]]></attr>
+<attr name="__metadata"><![CDATA[true]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'opportunity' -&gt; 'Opp_x005fUpdate'" guiX="460" guiY="20" id="FOREACH_OPPORTUNITY_OPP_X005F_UPDATE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.Id = input.opportunityID;
+output.Workday_Sync__c = true;]]></attr>
+</Node>
+<Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Map&lt;k,v&gt; WRITER" guiX="900" guiY="20" id="MAP_WRITER0" type="MAP_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<clover:element clover:name="Opp_Update" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <Id>$0.Id</Id>
+  <clover:element clover:name="Workday_Sync__c">$0.Workday_Sync__c</clover:element>
+</clover:element>]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="e532fbe3-2019-413f-a677-fd6466d83a17" outPort="Port 0 (out)" toNode="FOREACH_OPPORTUNITY_OPP_X005F_UPDATE:0"/>
+<Edge debugMode="true" fromNode="FOREACH_OPPORTUNITY_OPP_X005F_UPDATE:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="754bbf9b-75e6-4561-8d4c-ee75c7b734ad" outPort="Port 0 (out)" toNode="MAP_WRITER0:0"/>
+</Phase>
+</Graph>

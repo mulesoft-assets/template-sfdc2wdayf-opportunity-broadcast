@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wd-revenue="http://www.mulesoft.org/schema/mule/wd-revenue" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
+http://www.mulesoft.org/schema/mule/wd-revenue http://www.mulesoft.org/schema/mule/wd-revenue/current/mule-wd-revenue.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd">
+    <sub-flow name="createSFDCAccountFlow">
+        <sfdc:create config-ref="Salesforce" type="Account" doc:name="Salesforce">
+            <sfdc:objects ref="#[payload]"/>
+        </sfdc:create>
+        <logger message="account created: #[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="createSFDCOpportunityFlow">
+        <sfdc:create config-ref="Salesforce" type="Opportunity" doc:name="Salesforce">
+            <sfdc:objects ref="#[payload]"/>
+        </sfdc:create>
+        <logger message="opp created: #[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="retrieveWdayCustomerFlow">
+        <wd-revenue:get-customers config-ref="Workday_Revenue_Management" getCustomersRequest-ref="#[org.mule.templates.CustomerRequest.getCustomer(payload)]" doc:name="Workday Revenue Management"/>
+    </sub-flow>
+    <sub-flow name="retrieveWdayOpportunityFlow">
+        <wd-revenue:get-opportunities config-ref="Workday_Revenue_Management" doc:name="Workday Revenue Management" getOpportunitiesRequest-ref="#[new com.workday.revenue.GetOpportunitiesRequestType()]"/>
+    </sub-flow>
+    <sub-flow name="inactiveWdayCustomerFlow">
+        <wd-revenue:put-customer config-ref="Workday_Revenue_Management" doc:name="Workday Revenue Management"/>
+    </sub-flow>
+    <sub-flow name="inactivateWdayOpportunity">
+        <wd-revenue:put-opportunity config-ref="Workday_Revenue_Management" doc:name="Workday Revenue Management"/>
+    </sub-flow>
+    <sub-flow name="deleteSFDCDataFlow">
+        <sfdc:delete config-ref="Salesforce" doc:name="Salesforce"/>
+    </sub-flow>
+    <sub-flow name="createOpportunityProductFlow">
+        <sfdc:create config-ref="Salesforce" type="OpportunityLineItem" doc:name="Salesforce">
+            <sfdc:objects ref="#[payload]"/>
+        </sfdc:create>
+        <logger message="line item: #[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+</mule>

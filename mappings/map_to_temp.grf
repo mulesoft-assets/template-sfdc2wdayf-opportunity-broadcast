@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="edwinkwan" created="Mon Mar 09 18:05:26 PDT 2015" description="Map To temp" guiVersion="3.4.4.P" id="1426005919169" licenseCode="Unlicensed" licenseType="Unknown" modified="Mon Mar 09 18:05:26 PDT 2015" modifiedBy="edwinkwan" name="Map_To_temp" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="3" __referenceCounter="1" __sourcePath="{}/temp/Billing" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="485e561c-9204-4dea-9f87-f326cdad280e" _parent_id="__parent_id" _type="Output" id="226d3dca-0a0e-4abe-87bb-22c6d8417891">
+<Record fieldDelimiter="," name="Billing" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="9" __sourcePath="{}/temp/Billing/BillingCity" containerType="SINGLE" label="BillingCity" name="BillingCity" type="string"/>
+<Field __implementationClass="java.lang.String" __index="10" __sourcePath="{}/temp/Billing/BillingPostalCode" containerType="SINGLE" label="BillingPostalCode" name="BillingPostalCode" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="3" __referenceCounter="1" __sourcePath="{}/temp/Billing/BillingCountry" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="226d3dca-0a0e-4abe-87bb-22c6d8417891" _parent_id="__parent_id" _type="Output" id="22c4441d-0e5d-412e-93b6-de7fa945bb0a">
+<Record fieldDelimiter="," name="BillingCountry" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="3" __sourcePath="{}/temp/Billing/BillingCountry/BillingCountry" containerType="SINGLE" label="BillingCountry" name="BillingCountry" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="5" __referenceCounter="0" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef/BillingRef" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="a458e49d-5008-494b-8090-a58010cfaa03" _parent_id="__parent_id" _type="Output" id="20e0270f-329f-4c21-af03-8b2c8d58cffb">
+<Record fieldDelimiter="," name="BillingRef" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="5" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef/BillingRef/Ref" containerType="SINGLE" label="Ref" name="Ref" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="12" __referenceCounter="1" __sourcePath="{}/temp/Billing/BillingState" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="226d3dca-0a0e-4abe-87bb-22c6d8417891" _parent_id="__parent_id" _type="Output" id="5aff76ca-8014-478a-8863-5d1e5addb101">
+<Record fieldDelimiter="," name="BillingState" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="12" __sourcePath="{}/temp/Billing/BillingState/BillingState" containerType="SINGLE" label="BillingState" name="BillingState" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="11" __referenceCounter="1" __sourcePath="{}/temp/Billing/BillingStreet" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="226d3dca-0a0e-4abe-87bb-22c6d8417891" _parent_id="__parent_id" _type="Output" id="10129ca8-eb31-49fe-8352-0028c28573a6">
+<Record fieldDelimiter="," name="BillingStreet" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="11" __sourcePath="{}/temp/Billing/BillingStreet/BillingStreet" containerType="SINGLE" label="BillingStreet" name="BillingStreet" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="4" __referenceCounter="1" __sourcePath="{}/temp/Billing/BillingUsage/BillingType" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="5047ad0e-486e-4c9a-80d1-31620e8132c8" _parent_id="__parent_id" _type="Output" id="c3a3bd69-f5f5-4d73-bb93-db9e1841a003">
+<Record fieldDelimiter="," name="BillingType" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/temp/Billing/BillingUsage/BillingType/Primary" containerType="SINGLE" label="Primary" name="field_0" type="boolean"/>
+</Record>
+</Metadata>
+<Metadata __index="5" __referenceCounter="0" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="75cbe3f7-b992-4af6-b7b7-381dcd99dc2b" _parent_id="__parent_id" _type="Output" id="a458e49d-5008-494b-8090-a58010cfaa03">
+<Record fieldDelimiter="," name="BillingTypeRef" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="7" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef/TypeRef" containerType="SINGLE" label="TypeRef" name="TypeRef" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="2" __referenceCounter="1" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="c3a3bd69-f5f5-4d73-bb93-db9e1841a003" _parent_id="__parent_id" _type="Output" id="c81dff8e-52e4-4eef-9d35-7768a07f610d">
+<Record fieldDelimiter="," name="BillingTypeRef" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef/field_0" containerType="SINGLE" label="field_0" name="field_0" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="4" __referenceCounter="1" __sourcePath="{}/temp/Billing/BillingUsage" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="226d3dca-0a0e-4abe-87bb-22c6d8417891" _parent_id="__parent_id" _type="Output" id="5047ad0e-486e-4c9a-80d1-31620e8132c8">
+<Record fieldDelimiter="," name="BillingUsage" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="4" __sourcePath="{}/temp/Billing/BillingUsage/Public" containerType="SINGLE" label="Public" name="Comment" type="boolean"/>
+</Record>
+</Metadata>
+<Metadata __index="4" __referenceCounter="1" __sourcePath="{}/temp/Billing/BillingUsage/BillingUseFor" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="5047ad0e-486e-4c9a-80d1-31620e8132c8" _parent_id="__parent_id" _type="Output" id="3f8b55dd-bc51-4e0a-9fa2-0dab4461f0ee">
+<Record fieldDelimiter="," name="BillingUseFor" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/temp/Billing/BillingUsage/BillingUseFor/field_0" containerType="SINGLE" label="field_0" name="field_0" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="17" __sourcePath="{}/SFDC_x005fSource" _dataStructure="OBJECT" _id="__id" _type="Input" id="d2425219-83a6-4a22-9c24-19076fdccd95">
+<Record fieldDelimiter="," name="SFDC_Source" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="5" __sourcePath="{}/SFDC_x005fSource/BillingCity" containerType="SINGLE" label="BillingCity" name="BillingCity" type="string"/>
+<Field __index="8" __sourcePath="{}/SFDC_x005fSource/BillingCountry" containerType="SINGLE" label="BillingCountry" name="BillingCountry" type="string"/>
+<Field __index="7" __sourcePath="{}/SFDC_x005fSource/BillingPostalCode" containerType="SINGLE" label="BillingPostalCode" name="BillingPostalCode" type="string"/>
+<Field __index="6" __sourcePath="{}/SFDC_x005fSource/BillingState" containerType="SINGLE" label="BillingState" name="BillingState" type="string"/>
+<Field __index="4" __sourcePath="{}/SFDC_x005fSource/BillingStreet" containerType="SINGLE" label="BillingStreet" name="BillingStreet" type="string"/>
+<Field __index="0" __sourcePath="{}/SFDC_x005fSource/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+<Field __index="2" __sourcePath="{}/SFDC_x005fSource/Industry" containerType="SINGLE" label="Industry" name="Industry" type="string"/>
+<Field __index="1" __sourcePath="{}/SFDC_x005fSource/Name" containerType="SINGLE" label="Name" name="Name" type="string"/>
+<Field __index="3" __sourcePath="{}/SFDC_x005fSource/Phone" containerType="SINGLE" label="Phone" name="Phone" type="string"/>
+<Field __index="10" __sourcePath="{}/SFDC_x005fSource/ShippingCity" containerType="SINGLE" label="ShippingCity" name="ShippingCity" type="string"/>
+<Field __index="13" __sourcePath="{}/SFDC_x005fSource/ShippingCountry" containerType="SINGLE" label="ShippingCountry" name="ShippingCountry" type="string"/>
+<Field __index="12" __sourcePath="{}/SFDC_x005fSource/ShippingPostalCode" containerType="SINGLE" label="ShippingPostalCode" name="ShippingPostalCode" type="string"/>
+<Field __index="11" __sourcePath="{}/SFDC_x005fSource/ShippingState" containerType="SINGLE" label="ShippingState" name="ShippingState" type="string"/>
+<Field __index="9" __sourcePath="{}/SFDC_x005fSource/ShippingStreet" containerType="SINGLE" label="ShippingStreet" name="ShippingStreet" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="14" __referenceCounter="1" __sourcePath="{}/temp/Shipping" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="485e561c-9204-4dea-9f87-f326cdad280e" _parent_id="__parent_id" _type="Output" id="317f756e-a9b6-445b-96a3-4f28c2b0a006">
+<Record fieldDelimiter="," name="Shipping" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="16" __sourcePath="{}/temp/Shipping/ShippingCity" containerType="SINGLE" label="ShippingCity" name="ShippingCity" type="string"/>
+<Field __implementationClass="java.lang.String" __index="18" __sourcePath="{}/temp/Shipping/ShippingPostalCode" containerType="SINGLE" label="ShippingPostalCode" name="ShippingPostalCode" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="14" __referenceCounter="1" __sourcePath="{}/temp/Shipping/ShippingCountry" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="317f756e-a9b6-445b-96a3-4f28c2b0a006" _parent_id="__parent_id" _type="Output" id="6380cf87-8124-4b1a-a292-313062b5ef6a">
+<Record fieldDelimiter="," name="ShippingCountry" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="14" __sourcePath="{}/temp/Shipping/ShippingCountry/ShippingCountry" containerType="SINGLE" label="ShippingCountry" name="ShippingCountry" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="17" __referenceCounter="1" __sourcePath="{}/temp/Shipping/ShippingState" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="317f756e-a9b6-445b-96a3-4f28c2b0a006" _parent_id="__parent_id" _type="Output" id="66bfa09e-bd82-4f71-9182-5188b586de1e">
+<Record fieldDelimiter="," name="ShippingState" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="17" __sourcePath="{}/temp/Shipping/ShippingState/ShippingState" containerType="SINGLE" label="ShippingState" name="ShippingState" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="15" __referenceCounter="1" __sourcePath="{}/temp/Shipping/ShippingStreet" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="317f756e-a9b6-445b-96a3-4f28c2b0a006" _parent_id="__parent_id" _type="Output" id="eab689aa-b544-4d08-9dac-23fec0e2e267">
+<Record fieldDelimiter="," name="ShippingStreet" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="15" __sourcePath="{}/temp/Shipping/ShippingStreet/ShippingStreet" containerType="SINGLE" label="ShippingStreet" name="ShippingStreet" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="2" __referenceCounter="1" __sourcePath="{}/temp/Shipping/ShippingUsage/ShippingType" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="c686de5a-2e55-4702-82a8-712d6b873b2b" _parent_id="__parent_id" _type="Output" id="37a06402-8d42-4b7d-ab34-e8966730145b">
+<Record fieldDelimiter="," name="ShippingType" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/temp/Shipping/ShippingUsage/ShippingType/primary" containerType="SINGLE" label="primary" name="primary" type="boolean"/>
+</Record>
+</Metadata>
+<Metadata __index="2" __referenceCounter="1" __sourcePath="{}/temp/Shipping/ShippingUsage/ShippingType/ShippingTypeRef" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="37a06402-8d42-4b7d-ab34-e8966730145b" _parent_id="__parent_id" _type="Output" id="7089e826-9e6d-4a6c-9c2c-d604961c1bea">
+<Record fieldDelimiter="," name="ShippingTypeRef" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/temp/Shipping/ShippingUsage/ShippingType/ShippingTypeRef/field_0" containerType="SINGLE" label="field_0" name="field_0" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="18" __referenceCounter="1" __sourcePath="{}/temp/Shipping/ShippingUsage" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="317f756e-a9b6-445b-96a3-4f28c2b0a006" _parent_id="__parent_id" _type="Output" id="c686de5a-2e55-4702-82a8-712d6b873b2b">
+<Record fieldDelimiter="," name="ShippingUsage" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/temp/Shipping/ShippingUsage/public" containerType="SINGLE" label="public" name="public" type="boolean"/>
+</Record>
+</Metadata>
+<Metadata __index="2" __referenceCounter="1" __sourcePath="{}/temp/Shipping/ShippingUsage/ShippingUseFor" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="c686de5a-2e55-4702-82a8-712d6b873b2b" _parent_id="__parent_id" _type="Output" id="39de7589-9d24-4fa9-abbe-83215493ef84">
+<Record fieldDelimiter="," name="ShippingUseFor" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/temp/Shipping/ShippingUsage/ShippingUseFor/field_0" containerType="SINGLE" label="field_0" name="field_0" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/temp" _dataStructure="OBJECT" _id="__id" _type="Output" id="485e561c-9204-4dea-9f87-f326cdad280e">
+<Record fieldDelimiter="," name="temp" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="2" __sourcePath="{}/temp/BillingCountry" containerType="SINGLE" label="BillingCountry" name="BillingCountry" type="string"/>
+<Field __implementationClass="java.lang.String" __index="13" __sourcePath="{}/temp/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="19" __sourcePath="{}/temp/Industry" containerType="SINGLE" label="Industry" name="Industry" type="string"/>
+<Field __implementationClass="java.lang.String" __index="0" __sourcePath="{}/temp/Name" containerType="SINGLE" label="Name" name="Name" type="string"/>
+<Field __implementationClass="java.lang.String" __index="1" __sourcePath="{}/temp/Phone" containerType="SINGLE" label="Phone" name="Phone" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="6" __referenceCounter="0" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef/BillingRef/Test" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="20e0270f-329f-4c21-af03-8b2c8d58cffb" _parent_id="__parent_id" _type="Output" id="00c11140-e9f5-4fc8-9711-c9cf513eeb4f">
+<Record fieldDelimiter="," name="Test" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="6" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/BillingTypeRef/BillingRef/Test/field_x005f0" containerType="SINGLE" label="field_0" name="field_0" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="8" __referenceCounter="0" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/TypeID" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="75cbe3f7-b992-4af6-b7b7-381dcd99dc2b" _parent_id="__parent_id" _type="Output" id="8370ef02-bf03-4169-b473-81a6655a1ddb">
+<Record fieldDelimiter="," name="TypeID" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="8" __sourcePath="{}/temp/Billing/BillingUsage/BillingType/TypeID/field_x005f0" containerType="SINGLE" label="field_0" name="field_0" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Map&lt;k,v&gt; READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="BillingCity" trim="true" xpath="BillingCity"/>
+  <Mapping cloverField="BillingCountry" trim="true" xpath="BillingCountry"/>
+  <Mapping cloverField="BillingPostalCode" trim="true" xpath="BillingPostalCode"/>
+  <Mapping cloverField="BillingState" trim="true" xpath="BillingState"/>
+  <Mapping cloverField="BillingStreet" trim="true" xpath="BillingStreet"/>
+  <Mapping cloverField="Id" trim="true" xpath="Id"/>
+  <Mapping cloverField="Industry" trim="true" xpath="Industry"/>
+  <Mapping cloverField="Name" trim="true" xpath="Name"/>
+  <Mapping cloverField="Phone" trim="true" xpath="Phone"/>
+  <Mapping cloverField="ShippingCity" trim="true" xpath="ShippingCity"/>
+  <Mapping cloverField="ShippingCountry" trim="true" xpath="ShippingCountry"/>
+  <Mapping cloverField="ShippingPostalCode" trim="true" xpath="ShippingPostalCode"/>
+  <Mapping cloverField="ShippingState" trim="true" xpath="ShippingState"/>
+  <Mapping cloverField="ShippingStreet" trim="true" xpath="ShippingStreet"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'Billing'" guiX="460" guiY="120" id="FOREACH_SFDC_X005F_SOURCE_BILLING" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.BillingCity = input.BillingCity;
+output.BillingPostalCode = input.BillingPostalCode;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'BillingCountry'" guiX="460" guiY="220" id="FOREACH_SFDC_X005F_SOURCE_BILLING_COUNTRY" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.BillingCountry = input.BillingCountry;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'BillingState'" guiX="460" guiY="320" id="FOREACH_SFDC_X005F_SOURCE_BILLING_STATE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.BillingState = input.BillingState;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'BillingStreet'" guiX="460" guiY="420" id="FOREACH_SFDC_X005F_SOURCE_BILLING_STREET" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.BillingStreet = input.BillingStreet;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="BillingType" guiX="460" guiY="1020" id="FOREACH_SFDC_X005F_SOURCE_BILLING_TYPE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.field_0 = true;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="BillingTypeRef" guiX="460" guiY="1120" id="FOREACH_SFDC_X005F_SOURCE_BILLING_TYPE_REF" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.field_0 = "BUSINESS";]]></attr>
+</Node>
+<Node enabled="enabled" guiName="BillingUsage" guiX="460" guiY="920" id="FOREACH_SFDC_X005F_SOURCE_BILLING_USAGE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.Comment = false;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="BillingUseFor" guiX="460" guiY="1220" id="FOREACH_SFDC_X005F_SOURCE_BILLING_USE_FOR" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.field_0 = "BILLING";]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'Shipping'" guiX="460" guiY="520" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.ShippingCity = input.ShippingCity;
+output.ShippingPostalCode = input.ShippingPostalCode;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'ShippingCountry'" guiX="460" guiY="620" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING_COUNTRY" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.ShippingCountry = input.ShippingCountry;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'ShippingState'" guiX="460" guiY="720" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING_STATE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.ShippingState = input.ShippingState;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'ShippingStreet'" guiX="460" guiY="820" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING_STREET" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.ShippingStreet = input.ShippingStreet;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="ShippingType" guiX="460" guiY="1420" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING_TYPE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.primary = false;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="ShippingTypeRef" guiX="460" guiY="1520" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING_TYPE_REF" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.field_0 = "BUSINESS";]]></attr>
+</Node>
+<Node enabled="enabled" guiName="ShippingUsage" guiX="460" guiY="1320" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING_USAGE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.public = false;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="ShippingUseFor" guiX="460" guiY="1620" id="FOREACH_SFDC_X005F_SOURCE_SHIPPING_USE_FOR" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.field_0 = "SHIPPING";]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'SFDC_x005fSource' -&gt; 'temp'" guiX="460" guiY="20" id="FOREACH_SFDC_X005F_SOURCE_TEMP" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.BillingCountry = input.BillingCountry;
+output.Id = input.Id;
+output.Industry = input.Industry;
+output.Name = input.Name;
+output.Phone = input.Phone;
+]]></attr>
+</Node>
+<Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Map&lt;k,v&gt; WRITER" guiX="900" guiY="20" id="MAP_WRITER0" type="MAP_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<temp xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <Name clover:dataType="java.lang.String">$0.Name</Name>
+  <Phone clover:dataType="java.lang.String">$0.Phone</Phone>
+  <BillingCountry clover:dataType="java.lang.String">$0.BillingCountry</BillingCountry>
+  <clover:collection clover:name="Billing">
+    <item clover:inPort="1" clover:key="__parent_id" clover:parentKey="__id">
+      <clover:collection clover:name="BillingCountry">
+        <item clover:inPort="2" clover:key="__parent_id" clover:parentKey="__id">
+          <BillingCountry clover:dataType="java.lang.String">$2.BillingCountry</BillingCountry>
+        </item>
+      </clover:collection>
+      <clover:collection clover:name="BillingUsage">
+        <item clover:inPort="9" clover:key="__parent_id" clover:parentKey="__id">
+          <clover:collection clover:name="BillingType">
+            <item clover:inPort="10" clover:key="__parent_id" clover:parentKey="__id">
+              <clover:collection clover:name="BillingTypeRef">
+                <item clover:inPort="11" clover:key="__parent_id" clover:parentKey="__id">
+                  <clover:element clover:name="field_0">$11.field_0</clover:element>
+                </item>
+              </clover:collection>
+              <Primary>$10.field_0</Primary>
+            </item>
+          </clover:collection>
+          <clover:collection clover:name="BillingUseFor">
+            <item clover:inPort="12" clover:key="__parent_id" clover:parentKey="__id">
+              <clover:element clover:name="field_0">$12.field_0</clover:element>
+            </item>
+          </clover:collection>
+          <Public clover:dataType="java.lang.String">$9.Comment</Public>
+        </item>
+      </clover:collection>
+      <BillingCity clover:dataType="java.lang.String">$1.BillingCity</BillingCity>
+      <BillingPostalCode clover:dataType="java.lang.String">$1.BillingPostalCode</BillingPostalCode>
+      <clover:collection clover:name="BillingStreet">
+        <item clover:inPort="4" clover:key="__parent_id" clover:parentKey="__id">
+          <BillingStreet clover:dataType="java.lang.String">$4.BillingStreet</BillingStreet>
+        </item>
+      </clover:collection>
+      <clover:collection clover:name="BillingState">
+        <item clover:inPort="3" clover:key="__parent_id" clover:parentKey="__id">
+          <BillingState clover:dataType="java.lang.String">$3.BillingState</BillingState>
+        </item>
+      </clover:collection>
+    </item>
+  </clover:collection>
+  <Id clover:dataType="java.lang.String">$0.Id</Id>
+  <clover:collection clover:name="Shipping">
+    <item clover:inPort="5" clover:key="__parent_id" clover:parentKey="__id">
+      <clover:collection clover:name="ShippingCountry">
+        <item clover:inPort="6" clover:key="__parent_id" clover:parentKey="__id">
+          <ShippingCountry clover:dataType="java.lang.String">$6.ShippingCountry</ShippingCountry>
+        </item>
+      </clover:collection>
+      <clover:collection clover:name="ShippingStreet">
+        <item clover:inPort="8" clover:key="__parent_id" clover:parentKey="__id">
+          <ShippingStreet clover:dataType="java.lang.String">$8.ShippingStreet</ShippingStreet>
+        </item>
+      </clover:collection>
+      <ShippingCity clover:dataType="java.lang.String">$5.ShippingCity</ShippingCity>
+      <clover:collection clover:name="ShippingState">
+        <item clover:inPort="7" clover:key="__parent_id" clover:parentKey="__id">
+          <ShippingState clover:dataType="java.lang.String">$7.ShippingState</ShippingState>
+        </item>
+      </clover:collection>
+      <clover:collection clover:name="ShippingUsage">
+        <item clover:inPort="13" clover:key="__parent_id" clover:parentKey="__id">
+          <clover:collection clover:name="ShippingType">
+            <item clover:inPort="14" clover:key="__parent_id" clover:parentKey="__id">
+              <clover:collection clover:name="ShippingTypeRef">
+                <item clover:inPort="15" clover:key="__parent_id" clover:parentKey="__id">
+                  <clover:element clover:name="field_0">$15.field_0</clover:element>
+                </item>
+              </clover:collection>
+              <primary>$14.primary</primary>
+            </item>
+          </clover:collection>
+          <clover:collection clover:name="ShippingUseFor">
+            <item clover:inPort="16" clover:key="__parent_id" clover:parentKey="__id">
+              <clover:element clover:name="field_0">$16.field_0</clover:element>
+            </item>
+          </clover:collection>
+          <public>$13.public</public>
+        </item>
+      </clover:collection>
+      <ShippingPostalCode clover:dataType="java.lang.String">$5.ShippingPostalCode</ShippingPostalCode>
+    </item>
+  </clover:collection>
+  <Industry clover:dataType="java.lang.String">$0.Industry</Industry>
+</temp>]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+<attr name="__metadata"><![CDATA[true]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Duplicate SFDC_Source" guiX="240" guiY="20" id="SIMPLE_COPY0" type="SIMPLE_COPY"/>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 0 (out)" toNode="SIMPLE_COPY0:0"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING:0" guiBendpoints="" id="Edge4" inPort="Port 1 (in)" metadata="226d3dca-0a0e-4abe-87bb-22c6d8417891" outPort="Port 0 (out)" toNode="MAP_WRITER0:1"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING_COUNTRY:0" guiBendpoints="" id="Edge6" inPort="Port 2 (in)" metadata="22c4441d-0e5d-412e-93b6-de7fa945bb0a" outPort="Port 0 (out)" toNode="MAP_WRITER0:2"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING_STATE:0" guiBendpoints="" id="Edge8" inPort="Port 3 (in)" metadata="5aff76ca-8014-478a-8863-5d1e5addb101" outPort="Port 0 (out)" toNode="MAP_WRITER0:3"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING_STREET:0" guiBendpoints="" id="Edge10" inPort="Port 4 (in)" metadata="10129ca8-eb31-49fe-8352-0028c28573a6" outPort="Port 0 (out)" toNode="MAP_WRITER0:4"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING_TYPE:0" guiBendpoints="" id="Edge22" inPort="Port 10 (in)" metadata="c3a3bd69-f5f5-4d73-bb93-db9e1841a003" outPort="Port 0 (out)" toNode="MAP_WRITER0:10"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING_TYPE_REF:0" guiBendpoints="" id="Edge24" inPort="Port 11 (in)" metadata="c81dff8e-52e4-4eef-9d35-7768a07f610d" outPort="Port 0 (out)" toNode="MAP_WRITER0:11"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING_USAGE:0" guiBendpoints="" id="Edge20" inPort="Port 9 (in)" metadata="5047ad0e-486e-4c9a-80d1-31620e8132c8" outPort="Port 0 (out)" toNode="MAP_WRITER0:9"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_BILLING_USE_FOR:0" guiBendpoints="" id="Edge26" inPort="Port 12 (in)" metadata="3f8b55dd-bc51-4e0a-9fa2-0dab4461f0ee" outPort="Port 0 (out)" toNode="MAP_WRITER0:12"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING:0" guiBendpoints="" id="Edge12" inPort="Port 5 (in)" metadata="317f756e-a9b6-445b-96a3-4f28c2b0a006" outPort="Port 0 (out)" toNode="MAP_WRITER0:5"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_COUNTRY:0" guiBendpoints="" id="Edge14" inPort="Port 6 (in)" metadata="6380cf87-8124-4b1a-a292-313062b5ef6a" outPort="Port 0 (out)" toNode="MAP_WRITER0:6"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_STATE:0" guiBendpoints="" id="Edge16" inPort="Port 7 (in)" metadata="66bfa09e-bd82-4f71-9182-5188b586de1e" outPort="Port 0 (out)" toNode="MAP_WRITER0:7"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_STREET:0" guiBendpoints="" id="Edge18" inPort="Port 8 (in)" metadata="eab689aa-b544-4d08-9dac-23fec0e2e267" outPort="Port 0 (out)" toNode="MAP_WRITER0:8"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_TYPE:0" guiBendpoints="" id="Edge30" inPort="Port 14 (in)" metadata="37a06402-8d42-4b7d-ab34-e8966730145b" outPort="Port 0 (out)" toNode="MAP_WRITER0:14"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_TYPE_REF:0" guiBendpoints="" id="Edge32" inPort="Port 15 (in)" metadata="7089e826-9e6d-4a6c-9c2c-d604961c1bea" outPort="Port 0 (out)" toNode="MAP_WRITER0:15"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_USAGE:0" guiBendpoints="" id="Edge28" inPort="Port 13 (in)" metadata="c686de5a-2e55-4702-82a8-712d6b873b2b" outPort="Port 0 (out)" toNode="MAP_WRITER0:13"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_USE_FOR:0" guiBendpoints="" id="Edge34" inPort="Port 16 (in)" metadata="39de7589-9d24-4fa9-abbe-83215493ef84" outPort="Port 0 (out)" toNode="MAP_WRITER0:16"/>
+<Edge debugMode="true" fromNode="FOREACH_SFDC_X005F_SOURCE_TEMP:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="485e561c-9204-4dea-9f87-f326cdad280e" outPort="Port 0 (out)" toNode="MAP_WRITER0:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 0 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_TEMP:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:1" guiBendpoints="" id="Edge3" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 1 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:2" guiBendpoints="" id="Edge5" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 2 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING_COUNTRY:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:3" guiBendpoints="" id="Edge7" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 3 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING_STATE:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:4" guiBendpoints="" id="Edge9" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 4 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING_STREET:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:5" guiBendpoints="" id="Edge11" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 5 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:6" guiBendpoints="" id="Edge13" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 6 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_COUNTRY:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:7" guiBendpoints="" id="Edge15" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 7 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_STATE:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:8" guiBendpoints="" id="Edge17" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 8 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_STREET:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:9" guiBendpoints="" id="Edge19" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 9 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING_USAGE:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:10" guiBendpoints="" id="Edge21" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 10 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING_TYPE:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:11" guiBendpoints="" id="Edge23" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 11 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING_TYPE_REF:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:12" guiBendpoints="" id="Edge25" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 12 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_BILLING_USE_FOR:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:13" guiBendpoints="" id="Edge27" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 13 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_USAGE:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:14" guiBendpoints="" id="Edge29" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 14 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_TYPE:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:15" guiBendpoints="" id="Edge31" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 15 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_TYPE_REF:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:16" guiBendpoints="" id="Edge33" inPort="Port 0 (in)" metadata="d2425219-83a6-4a22-9c24-19076fdccd95" outPort="Port 16 (out)" toNode="FOREACH_SFDC_X005F_SOURCE_SHIPPING_USE_FOR:0"/>
+</Phase>
+</Graph>

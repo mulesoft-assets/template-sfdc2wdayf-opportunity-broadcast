@@ -9,8 +9,7 @@
 	xmlns:spring="http://www.springframework.org/schema/beans" 
 	version="EE-3.6.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="
-http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
@@ -21,7 +20,6 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
     <data-mapper:config name="Map_To_GetCustomersRequestType" transformationGraphPath="map_to_getcustomersrequesttype.grf" doc:name="Map_To_GetCustomersRequestType"/>
     <data-mapper:config name="Map_To_Map" transformationGraphPath="map_to_map.grf" doc:name="Map_To_Map"/>
     <data-mapper:config name="temp_To_PutOpportunityRequestType" transformationGraphPath="temp_to_putopportunityrequesttype.grf" doc:name="temp_To_PutOpportunityRequestType"/>
-    <data-mapper:config name="GetOpportunitiesResponseType_To_Map" transformationGraphPath="getopportunitiesresponsetype_to_map.grf" doc:name="GetOpportunitiesResponseType_To_Map"/>
     <data-mapper:config name="PutOpportunityResponseType_To_Map" transformationGraphPath="putopportunityresponsetype_to_map.grf" doc:name="PutOpportunityResponseType_To_Map"/>
     <data-mapper:config name="temp_To_PutCustomerRequestType" transformationGraphPath="temp_to_putcustomerrequesttype.grf" doc:name="temp_To_PutCustomerRequestType"/>
     <data-mapper:config name="Map_To_temp" transformationGraphPath="map_to_temp.grf" doc:name="Map_To_temp"/>
@@ -36,7 +34,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                 <wd-revenue:get-customers config-ref="Workday_Revenue_Management" doc:name="find Customer"/>
             </processor-chain>
         </enricher>
-        <flow-ref name="syncOpportunityFlow" doc:name="syncOpportunity"/>
+        <flow-ref name="syncOpportunityFlow" doc:name="syncOpportunityFlow"/>
         <choice-exception-strategy doc:name="Choice Exception Strategy">
             <catch-exception-strategy when="#[exception.causedBy(org.mule.modules.workday.api.exception.WorkdayException)]" doc:name="No Existing Customer">
                 <set-payload value="#[flowVars['accountInSFDC']]" doc:name="bring in SFDC Account Info"/>
@@ -47,21 +45,20 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                         <wd-revenue:put-customer config-ref="Workday_Revenue_Management" doc:name="create Customer"/>
                     </processor-chain>
                 </enricher>
-                <flow-ref name="syncOpportunityFlow" doc:name="syncOpportunity"/>
+                <flow-ref name="syncOpportunityFlow" doc:name="syncOpportunityFlow"/>
             </catch-exception-strategy>
             <catch-exception-strategy doc:name="Default Exception">
                 <logger level="INFO" doc:name="log the message"/>
             </catch-exception-strategy>
         </choice-exception-strategy>
     </flow>
-    <flow name="syncOpportunityFlow" >
-        <enricher source="#[payload]" target="#[flowVars['oppInWD']]" doc:name="store opportunity in flowVars['oppInWD']">
-            <processor-chain doc:name="Processor Chain">
-                <data-mapper:transform config-ref="Map_To_GetOpportunitiesRequestType" doc:name="Map To GetOpportunitiesRequestType"/>
-                <wd-revenue:get-opportunities config-ref="Workday_Revenue_Management" doc:name="find Opportunity"/>
-            </processor-chain>
-        </enricher>
-        <data-mapper:transform config-ref="GetOpportunitiesResponseType_To_Map" input-ref="#[flowVars[&quot;oppInWD&quot;]]" doc:name="GetOpportunitiesResponseType To Map"/>
+    <flow name="syncOpportunityFlow" >        
+        <data-mapper:transform config-ref="Map_To_GetOpportunitiesRequestType" doc:name="Map To GetOpportunitiesRequestType"/>
+        <wd-revenue:get-opportunities config-ref="Workday_Revenue_Management" doc:name="find Opportunity"/>
+        <expression-component doc:name="prepare Update"><![CDATA[map = new HashMap();
+map.put("Id", payload.responseData.get(0).opportunity.get(0).getOpportunityData().getOpportunityID());
+map.put("Workday_sync__c", true);
+payload = map;]]></expression-component>
         <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="update Workday Sync Status">
             <sfdc:object ref="#[payload]"/>
         </sfdc:update-single>

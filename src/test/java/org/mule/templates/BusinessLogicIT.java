@@ -6,6 +6,7 @@
 
 package org.mule.templates;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mule.templates.builders.SfdcObjectBuilder.anAccount;
 
@@ -31,6 +32,7 @@ import org.mule.processor.chain.SubflowInterceptingChainLifecycleWrapper;
 import org.mule.templates.builders.SfdcObjectBuilder;
 import org.mule.transport.NullPayload;
 
+import com.mulesoft.module.batch.BatchTestHelper;
 import com.sforce.soap.partner.SaveResult;
 import com.workday.revenue.BusinessEntityStatusValueObjectIDType;
 import com.workday.revenue.BusinessEntityStatusValueObjectType;
@@ -59,6 +61,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	private static String SFDC_PRICE_BOOK_ENTRY_ID, SFDC_PRICE_BOOK_ID;
 	private static String WDAY_STATUS_ID;
 	private static String WDAY_OPP_STATUS_ID;
+	private BatchTestHelper helper;
 	
 	private static final String PATH_TO_TEST_PROPERTIES = "./src/test/resources/mule.test.properties";
 	
@@ -76,6 +79,9 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		stopFlowSchedulers(POLL_FLOW_NAME);
+		registerListeners();
+		
 		Properties props = new Properties();
 		try {
 			
@@ -104,14 +110,19 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 
 	@Test
 	public void testMainFlow() throws Exception {
+		helper = new BatchTestHelper(muleContext);
+		// Run poll and wait for it to run
+		runSchedulersOnce(POLL_FLOW_NAME);
+		waitForPollToRun();
+		
 		logger.info("starting a test...............");
 		// WORKDAY
-		Thread.sleep(5000);
-		createOpportunity();
-		createOpportunityLineItem();
-		Thread.sleep(40000);
+		helper.awaitJobTermination(TIMEOUT_SEC * 1000, 500);
+		
 		wdayCustomer = invokeRetrieveWdayCustomerFlow(retrieveAccountWdayFlow, createdAccount.get("Id").toString());		
 		assertNotNull("Workday Customer should have been synced", wdayCustomer);
+		assertEquals("Workday Customer Name should match", createdAccount.get("Name").toString(), wdayCustomer.getCustomerData().getCustomerName());
+		
 		SubflowInterceptingChainLifecycleWrapper retrieveWdayOpportunityFlow = getSubFlow("retrieveWdayOpportunityFlow");
 		OpportunityResponseDataType oppData = invokeRetrieveWdayOpportunityFlow(retrieveWdayOpportunityFlow, createdAccount.get("Id").toString());
 		for (OpportunityType opp : oppData.getOpportunity()){
@@ -121,6 +132,9 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 			}
 		}
 		assertNotNull("Workday Opportunity should have been synced", wdayOpportunity);
+		assertEquals("Workday Opportunity Name should match", createdOpportunity.get("Name").toString(), wdayOpportunity.getOpportunityName());
+		assertEquals("Workday Opportunity Id should match", createdOpportunity.get("Id").toString(), wdayOpportunity.getOpportunityID());
+		
 	}
 		
 	@SuppressWarnings(value = { "unchecked" })
@@ -151,7 +165,10 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 
 		List<SaveResult> results = (List<SaveResult>) event.getMessage().getPayload();
 		createdAccount.put("Id", results.get(0).getId());
-			
+		
+		createOpportunity();
+		createOpportunityLineItem();
+		
 	}
 
 	@SuppressWarnings(value = { "unchecked" })
@@ -212,8 +229,12 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		deleteSFDCDataflow.initialise();
 
 		final List<Object> idList = new ArrayList<Object>();		
-		idList.add(createdAccount.get("Id"));
 		idList.add(createdOpportunity.get("Id"));
+		
+		deleteSFDCDataflow.process(getTestEvent(idList,
+				MessageExchangePattern.REQUEST_RESPONSE));
+		
+		idList.set(0, createdAccount.get("Id"));
 		deleteSFDCDataflow.process(getTestEvent(idList,
 				MessageExchangePattern.REQUEST_RESPONSE));
 
@@ -253,7 +274,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	static PutCustomerRequestType inactivateCustomer(CustomerType customer){	
 		PutCustomerRequestType put = new PutCustomerRequestType();
 		CustomerWWSDataType data = new CustomerWWSDataType();
-		LOGGER.info("inactivating wday: " + customer.getCustomerData().getCustomerName());
+		LOGGER.info("inactivating wday customer: " + customer.getCustomerData().getCustomerName());
 		data.setCustomerName(customer.getCustomerData().getCustomerName());
 		BusinessEntityWWSDataType entity = new BusinessEntityWWSDataType();
 		entity.setBusinessEntityName(customer.getCustomerData().getCustomerName());

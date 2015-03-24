@@ -17,11 +17,14 @@ import org.mule.MessageExchangePattern;
 import org.mule.api.MuleEvent;
 import org.mule.api.config.MuleProperties;
 import org.mule.construct.Flow;
+import org.mule.context.notification.NotificationException;
 import org.mule.processor.chain.SubflowInterceptingChainLifecycleWrapper;
 import org.mule.tck.junit4.FunctionalTestCase;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.tck.probe.PollingProber;
 import org.mule.tck.probe.Prober;
+import org.mule.templates.test.utils.ListenerProbe;
+import org.mule.templates.test.utils.PipelineSynchronizeListener;
 import org.mule.transport.NullPayload;
 
 /**
@@ -38,13 +41,18 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	protected static final String POLL_FLOW_NAME = "triggerFlow";
 	protected static final String TEMPLATE_NAME = "sfdc2wday-opp-broadcast";
 
-	protected final Prober pollProber = new PollingProber(60000, 1000l);
+	private final Prober pollProber = new PollingProber(TIMEOUT_SEC * 1000, 1000l);
+	private final PipelineSynchronizeListener pipelineListener = new PipelineSynchronizeListener(POLL_FLOW_NAME);
+	
 	
 	protected SubflowInterceptingChainLifecycleWrapper retrieveAccountFromBFlow;
 
 	@Rule
 	public DynamicPort port = new DynamicPort("http.port");
 	
+	protected void registerListeners() throws NotificationException {
+		muleContext.registerListener(pipelineListener);
+	}
 	
 	@Override
 	protected String getConfigResources() {
@@ -118,4 +126,8 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 		return (Flow) muleContext.getRegistry().lookupObject(flowName);
 	}
 
+	protected void waitForPollToRun() {
+		pollProber.check(new ListenerProbe(pipelineListener));
+		logger.info("Poll flow done");
+	}
 }

@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
     xmlns:wd-revenue="http://www.mulesoft.org/schema/mule/wd-revenue" 
     xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
 	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
-	version="EE-3.6.0"
+	version="EE-3.6.1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
 http://www.mulesoft.org/schema/mule/wd-revenue http://www.mulesoft.org/schema/mule/wd-revenue/current/mule-wd-revenue.xsd
-http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
 
     <data-mapper:config name="Map_To_GetOpportunitiesRequestType" transformationGraphPath="map_to_getopportunitiesrequesttype.grf" doc:name="Map_To_GetOpportunitiesRequestType"/>
     <data-mapper:config name="Map_To_GetCustomersRequestType" transformationGraphPath="map_to_getcustomersrequesttype.grf" doc:name="Map_To_GetCustomersRequestType"/>
@@ -23,67 +25,75 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
     <data-mapper:config name="PutOpportunityResponseType_To_Map" transformationGraphPath="putopportunityresponsetype_to_map.grf" doc:name="PutOpportunityResponseType_To_Map"/>
     <data-mapper:config name="temp_To_PutCustomerRequestType" transformationGraphPath="temp_to_putcustomerrequesttype.grf" doc:name="temp_To_PutCustomerRequestType"/>
     <data-mapper:config name="Map_To_temp" transformationGraphPath="map_to_temp.grf" doc:name="Map_To_temp"/>
-    
-    <flow name="syncCustomerFlow" >
-        <enricher source="#[payload]" target="#[flowVars['accountInSFDC']]" doc:name="store SFDC Account in 'flowVars['accountInSFDC']">
-            <sfdc:query-single config-ref="Salesforce" query="SELECT Industry, BillingCity,BillingCountry,BillingPostalCode,BillingState,BillingStreet,Id,Name,Phone,ShippingCity,ShippingCountry,ShippingPostalCode,ShippingState,ShippingStreet FROM Account where Id = '#[payload['AccountId']]'" doc:name="query Salesforce Account"/>
-        </enricher>
-        <enricher source="#[payload]" target="#[flowVars['accountInWD']]" doc:name="store Workday Customer in 'flowVars['accountInWD']'">
-            <processor-chain doc:name="Processor Chain">
-                <data-mapper:transform config-ref="Map_To_GetCustomersRequestType" doc:name="Map To GetCustomersRequestType"/>
-                <wd-revenue:get-customers config-ref="Workday_Revenue_Management" doc:name="find Customer"/>
-            </processor-chain>
-        </enricher>
-        <flow-ref name="syncOpportunityFlow" doc:name="syncOpportunityFlow"/>
-        <choice-exception-strategy doc:name="Choice Exception Strategy">
-            <catch-exception-strategy when="#[exception.causedBy(org.mule.modules.workday.api.exception.WorkdayException)]" doc:name="No Existing Customer">
-                <set-payload value="#[flowVars['accountInSFDC']]" doc:name="bring in SFDC Account Info"/>
-                <enricher source="#[payload]" target="#[flowVars['accountInWD']]" doc:name="store Workday Customer in 'flowVars['accountInWD']'">
+    <batch:job name="syncOpportunitiesBatch" max-failed-records="-1">
+        <batch:process-records>
+            <batch:step name="findSFDCAccountStep">
+                <batch:set-record-variable variableName="sfdcOpportunity" value="#[payload]" doc:name="Store SFDC Opportunity"/>
+                <logger message="SFDC opportunity: #[payload]" level="INFO" doc:name="Log the opportunity"/>
+                <enricher source="#[payload]" target="#[recordVars['accountInSFDC']]" doc:name="store SFDC Account in 'recordVars['accountInSFDC']">
+                    <sfdc:query-single config-ref="Salesforce" query="SELECT Industry, BillingCity,BillingCountry,BillingPostalCode,BillingState,BillingStreet,Id,Name,Phone,ShippingCity,ShippingCountry,ShippingPostalCode,ShippingState,ShippingStreet FROM Account where Id = '#[payload['AccountId']]'" doc:name="query Salesforce Account"/>
+                </enricher>
+            </batch:step>
+            <batch:step name="findWorkdayCustomerStep">
+                <enricher source="#[payload]" target="#[recordVars['accountInWD']]" doc:name="store Workday Customer in 'recordVars['accountInWD']'">
                     <processor-chain doc:name="Processor Chain">
-                        <data-mapper:transform config-ref="Map_To_temp" doc:name="Map To temp"/>
-                        <data-mapper:transform config-ref="temp_To_PutCustomerRequestType" doc:name="temp To PutCustomerRequestType"/>
-                        <wd-revenue:put-customer config-ref="Workday_Revenue_Management" doc:name="create Customer"/>
+                        <data-mapper:transform config-ref="Map_To_GetCustomersRequestType" doc:name="Map To GetCustomersRequestType"/>
+                        <wd-revenue:get-customers config-ref="Workday_Revenue_Management" doc:name="find Customer"/>
                     </processor-chain>
                 </enricher>
-                <flow-ref name="syncOpportunityFlow" doc:name="syncOpportunityFlow"/>
-            </catch-exception-strategy>
-            <catch-exception-strategy doc:name="Default Exception">
-                <logger level="INFO" doc:name="log the message"/>
-            </catch-exception-strategy>
-        </choice-exception-strategy>
-    </flow>
-    <flow name="syncOpportunityFlow" >        
-        <data-mapper:transform config-ref="Map_To_GetOpportunitiesRequestType" doc:name="Map To GetOpportunitiesRequestType"/>
-        <wd-revenue:get-opportunities config-ref="Workday_Revenue_Management" doc:name="find Opportunity"/>
-        <expression-component doc:name="prepare Update"><![CDATA[map = new HashMap();
-map.put("Id", payload.responseData.get(0).opportunity.get(0).getOpportunityData().getOpportunityID());
-map.put("Workday_sync__c", true);
-payload = map;]]></expression-component>
-        <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="update Workday Sync Status">
-            <sfdc:object ref="#[payload]"/>
-        </sfdc:update-single>
-        <choice-exception-strategy doc:name="Choice Exception Strategy">
-            <catch-exception-strategy when="#[exception.causedBy(org.mule.modules.workday.api.exception.WorkdayException)]" doc:name="No Existing Opportunity">
-                <sfdc:query config-ref="Salesforce" query="SELECT Id,Description,OpportunityId,Quantity,TotalPrice,UnitPrice FROM OpportunityLineItem where OpportunityId = '#[flowVars['SFDC_Opp']['Id']]'" doc:name="query Opportunity Lines"/>
+            </batch:step>
+            <batch:step name="createCustomerStep" accept-policy="ONLY_FAILURES">
+                <flow-ref name="createCustomerSubflow" doc:name="call createCustomerSubflow"/>
+            </batch:step>
+            <batch:step name="findWorkdayOpportunityAndUpdateSFDCOpportunityStep" accept-policy="ALL">
+                <flow-ref name="findWorkdayOpportunitySubflow" doc:name="call findWorkdayOpportunitySubflow"/>
+                
+            </batch:step>
+            <batch:step name="createWorkdayOpportunityStep" accept-policy="ONLY_FAILURES">
+                <flow-ref name="createWorkdayOpportunitySubflow" doc:name="call createOpportunitySubflow"/>                
+            </batch:step>
+        </batch:process-records>
+        <batch:on-complete>
+            <json:object-to-json-transformer doc:name="transform BatchJobInstance to JSON"/>
+            <logger message="Migration process has finished: #[payload]" level="INFO" doc:name="log 'Migration process has finished'"/>
+        </batch:on-complete>
+    </batch:job>
+    <sub-flow name="createWorkdayOpportunitySubflow">
+        <set-payload value="#[recordVars['sfdcOpportunity']]" doc:name="bring in SFDC Opportunity"/>
+    	<sfdc:query config-ref="Salesforce" query="SELECT Id,Description,OpportunityId,Quantity,TotalPrice,UnitPrice FROM OpportunityLineItem where OpportunityId = '#[payload['Id']]'" doc:name="query Opportunity Lines"/>
                 <data-mapper:transform config-ref="Map_To_Map" doc:name="prepare temp data"/>
                 <data-mapper:transform config-ref="temp_To_PutOpportunityRequestType" doc:name="temp To PutOpportunityRequestType">
                     <data-mapper:input-arguments>
-                        <data-mapper:input-argument key="AccountId">#[flowVars['SFDC_Opp']['AccountId']]</data-mapper:input-argument>
-                        <data-mapper:input-argument key="OppName">#[flowVars['SFDC_Opp']['Name']]</data-mapper:input-argument>
-                        <data-mapper:input-argument key="OppId">#[flowVars['SFDC_Opp']['Id']]</data-mapper:input-argument>
+                <data-mapper:input-argument key="OppName">#[recordVars['sfdcOpportunity']['Name']]</data-mapper:input-argument>
+                <data-mapper:input-argument key="OppId">#[recordVars['sfdcOpportunity']['Id']]</data-mapper:input-argument>
+                <data-mapper:input-argument key="AccountId">#[recordVars['sfdcOpportunity']['AccountId']]</data-mapper:input-argument>
                     </data-mapper:input-arguments>
                 </data-mapper:transform>
-                <wd-revenue:put-opportunity config-ref="Workday_Revenue_Management" doc:name="Create Opportunity"/>
-                <data-mapper:transform doc:name="PutOpportunityResponseType To Map" config-ref="PutOpportunityResponseType_To_Map"/>
-                <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="Update Workday Sync Status">
+                <wd-revenue:put-opportunity config-ref="Workday_Revenue_Management" doc:name="create Opportunity"/>
+                <data-mapper:transform config-ref="PutOpportunityResponseType_To_Map" doc:name="PutOpportunityResponseType To Map"/>
+                <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="update Workday Sync Status">
                     <sfdc:object ref="#[payload]"/>
                 </sfdc:update-single>
                 <logger message="#[payload]" level="INFO" doc:name="log the update result"/>
-            </catch-exception-strategy>
-            <catch-exception-strategy doc:name="Catch Exception Strategy">
-                <logger message="#[payload]" level="INFO" doc:name="log the message"/>
-            </catch-exception-strategy>
-        </choice-exception-strategy>
-    </flow>	
+	</sub-flow>
+    <sub-flow name="findWorkdayOpportunitySubflow">
+        <set-payload value="#[recordVars['sfdcOpportunity']]" doc:name="bring in SFDC Opportunity"/>
+    	<data-mapper:transform config-ref="Map_To_GetOpportunitiesRequestType" doc:name="Map To GetOpportunitiesRequestType"/>
+                <wd-revenue:get-opportunities config-ref="Workday_Revenue_Management" doc:name="find Opportunity"/>
+                <expression-component doc:name="prepare Update"><![CDATA[map = new HashMap();
+map.put("Id", payload.responseData.get(0).opportunity.get(0).getOpportunityData().getOpportunityID());
+map.put("Workday_sync__c", true);
+payload = map;]]></expression-component>
+                <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="update Workday Sync Status">
+                    <sfdc:object ref="#[payload]"/>
+                </sfdc:update-single>
+    </sub-flow>
+    <sub-flow name="createCustomerSubflow">
+        <set-payload value="#[recordVars['accountInSFDC']]" doc:name="bring in SFDC Account Info"/>
+        <data-mapper:transform config-ref="Map_To_temp" doc:name="Map To temp"/>
+        <data-mapper:transform config-ref="temp_To_PutCustomerRequestType" doc:name="temp To PutCustomerRequestType"/>
+        <wd-revenue:put-customer config-ref="Workday_Revenue_Management" doc:name="create Customer"/>
+    </sub-flow>                
+	
 
 </mule>

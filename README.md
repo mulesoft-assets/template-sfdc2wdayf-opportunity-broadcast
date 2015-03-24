@@ -28,7 +28,9 @@ Please review the terms of the license before downloading and using this templat
 # Use Case <a name="usecase"/>
 As a Salesforce admin I want to synchronize opportunities at Closed Won stage from a Salesforce Org to a Workday instance.
 
-Instead of a Polling component, this template employs Salesforce Streaming API. The component subscribes to the predefined topic. As a result, it will recieve notifications of changes of Salesforce data in real-time from the server to the client based on a predefined SOQL query.
+Everytime there is an opportunity set to Closed Won stage, the integration will poll for changes from Salesforce source instance and it will be responsible for updating the opportunity in Workday target instance.
+
+Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 
 # Considerations <a name="considerations"/>
 
@@ -46,23 +48,7 @@ There are a couple of things you should take into account before running this te
 Custom mappings need to be extended to cover other values.
 
 3. A SFDC opportunity must have some Products associated.
-4. An Opportunity object needs to be extended in Salesforce by a new field called Workday_sync of Checkbox data type. It will store the flag if a record was synchronized by this integration process. 
-5. A PushTopic needs to be created so the app is able to get notifications about the opportunities changes in Salesforce. Follow these guidelines:
-
-	1. Select Your Name | Developer Console in Salesforce.
-	2. Click Debug | Open Execute Anonymous Window.
-	3. In the Enter Apex Code window, paste in the following Apex code, and click Execute.
-	
-			PushTopic pushTopic = new PushTopic();
-			pushTopic.Name = 'ClosedWon';
-			pushTopic.Query = 'SELECT AccountId,Amount,CloseDate,Id,LastModifiedDate,Name,OwnerId,StageName FROM Opportunity WHERE IsClosed = true and Workday_Sync__c = false';
-			pushTopic.ApiVersion = 33.0;
-			pushTopic.NotifyForOperationCreate = true;
-			pushTopic.NotifyForOperationUpdate = true;
-			pushTopic.NotifyForOperationUndelete = true;
-			pushTopic.NotifyForOperationDelete = true;
-			pushTopic.NotifyForFields = 'Referenced';
-			insert pushTopic;
+4. An Opportunity object needs to be extended in Salesforce by a new field called Workday_sync of Checkbox data type. It will store the flag if a record was synchronized by this integration process.
 
 
 
@@ -169,6 +155,11 @@ Mule Studio provides you with really easy way to deploy your Template directly t
 ## Properties to be configured (With examples) <a name="propertiestobeconfigured"/>
 In order to use this Mule Anypoint Template you need to configure properties (Credentials, configurations, etc.) either in properties file or in CloudHub as Environment Variables. Detail list with examples:
 ### Application configuration
++ page.size `100`
++ poll.frequency `5000`
++ poll.delay `0`
++ watermark.default.expression `YESTERDAY`
+
 #### Workday Connector configuration
 + wday.user `user@company`
 + wday.password `secret`
@@ -181,7 +172,15 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sfdc.url `https://login.salesforce.com/services/Soap/u/30.0`
 
 # API Calls <a name="apicalls"/>
-Application benefits from the Salesforce Streaming API so the number of API calls is reduced by calls that return no data.
+Salesforce imposes limits on the number of API Calls that can be made. Therefore calculating this amount may be an important factor to consider. The Anypoint Template calls to the API can be calculated using the formula:
+
+***1 + X + X / 200***
+
+Being ***X*** the number of Accounts to be synchronized on each run. 
+
+The division by ***200*** is because, by default, Accounts are gathered in groups of 200 for each Upsert API Call in the commit step.	
+
+For instance if 10 records are fetched from origin instance, then 12 api calls will be made (1 + 10 + 1).
 
 
 # Customize It!<a name="customizeit"/>
@@ -204,15 +203,21 @@ In the visual editor they can be found on the *Global Element* tab.
 
 
 ## businessLogic.xml<a name="businesslogicxml"/>
-The business logic consists of two flows:
+This file holds the functional aspect of the Anypoint Template, directed by one flow responsible of conducting the business logic.
 
-1. syncCustomerFlow - responsible for upserting a customer in Workday as it is a required reference for an opportunity in Workday
-2. syncOpportunityFlow - responsible for upserting a Workday opportunity and related line items
+Functional aspect of the Anypoint Template is implemented on this XML, directed by one flow that will poll for Salesforce updates.
+Several message processors constitute these high level actions that fully implement the logic of this Anypoint Template:
+
+1. Before the Input stage the Anypoint Template will query all the existing opportunities that have been updated after watermark.
+2. During the Process stage, firstly a Salesforce Account owning the processed Opportunity will be used to get a Workday Customer. If not existing, a new one is created.   
+3. Next, a Workday Opportunity is retrieved and a Salesforce Opportunity is updated with a flag so it is not processed on the next run.
+4. If the Workday opportunity does not exist, then it is created.  
+5. Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
 
 
 
 ## endpoints.xml<a name="endpointsxml"/>
-The flow contains a Salesforce Streaming API component that is notified by Salesforce about the opportunity data changes.
+This is file is conformed by a Flow containing the endpoints for triggering the template and retrieving the objects that meet the defined criteria in the query. And then executing the batch job process with the query results.
 
 
 

@@ -62,7 +62,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	private static String WDAY_STATUS_ID;
 	private static String WDAY_OPP_STATUS_ID;
 	private BatchTestHelper helper;
-	
+
 	private static final String PATH_TO_TEST_PROPERTIES = "./src/test/resources/mule.test.properties";
 	
 	private Map<String, Object> createdAccount = new HashMap<String, Object>();
@@ -115,7 +115,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		runSchedulersOnce(POLL_FLOW_NAME);
 		waitForPollToRun();
 		
-		logger.info("starting a test...............");
+		LOGGER.info("starting a test...............");
 		// WORKDAY
 		helper.awaitJobTermination(TIMEOUT_SEC * 1000, 500);
 		
@@ -197,25 +197,20 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	private void createOpportunityLineItem() throws MuleException, Exception{
 		SfdcObjectBuilder lineItemBuilder = SfdcObjectBuilder.aLineItem()
 												.with("OpportunityId", createdOpportunity.get("Id"))
-												.with("PricebookEntryId", SFDC_PRICE_BOOK_ENTRY_ID)
-												
-		.with("UnitPrice", "1000")
-		.with("Quantity", 2.0)
-		;
+												.with("PricebookEntryId", SFDC_PRICE_BOOK_ENTRY_ID)											
+												.with("UnitPrice", "1000")
+												.with("Quantity", 2.0);
 		SubflowInterceptingChainLifecycleWrapper flow = getSubFlow("createOpportunityProductFlow");
 		flow.initialise();				
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		list.add(lineItemBuilder.build());
-		flow.process(getTestEvent(list, MessageExchangePattern.REQUEST_RESPONSE));
-		
+		flow.process(getTestEvent(list, MessageExchangePattern.REQUEST_RESPONSE));		
 	}
 
 	@SuppressWarnings("unchecked")
 	protected Map<String, Object> invokeRetrieveFlow(SubflowInterceptingChainLifecycleWrapper flow, Map<String, Object> payload) throws Exception {
 		MuleEvent event = flow.process(getTestEvent(payload, MessageExchangePattern.REQUEST_RESPONSE));
-		Object resultPayload = event.getMessage()
-									.getPayload();
-
+		Object resultPayload = event.getMessage().getPayload();
 		if (resultPayload instanceof NullPayload) {
 			return null;
 		} else {
@@ -231,12 +226,10 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		final List<Object> idList = new ArrayList<Object>();		
 		idList.add(createdOpportunity.get("Id"));
 		
-		deleteSFDCDataflow.process(getTestEvent(idList,
-				MessageExchangePattern.REQUEST_RESPONSE));
+		deleteSFDCDataflow.process(getTestEvent(idList,	MessageExchangePattern.REQUEST_RESPONSE));
 		
 		idList.set(0, createdAccount.get("Id"));
-		deleteSFDCDataflow.process(getTestEvent(idList,
-				MessageExchangePattern.REQUEST_RESPONSE));
+		deleteSFDCDataflow.process(getTestEvent(idList,	MessageExchangePattern.REQUEST_RESPONSE));
 
 		// Workday			
 		SubflowInterceptingChainLifecycleWrapper inactivateAccountFromWdayflow = getSubFlow("inactiveWdayCustomerFlow");
@@ -278,7 +271,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		data.setCustomerName(customer.getCustomerData().getCustomerName());
 		BusinessEntityWWSDataType entity = new BusinessEntityWWSDataType();
 		entity.setBusinessEntityName(customer.getCustomerData().getCustomerName());
-		data.setBusinessEntityData(entity );
+		data.setBusinessEntityData(entity);
 		data.setCustomerCategoryReference(customer.getCustomerData().getCustomerCategoryReference());
 		List<CustomerStatusDataType> statusList = new ArrayList<CustomerStatusDataType>();
 		CustomerStatusDataType status = new CustomerStatusDataType();
@@ -287,22 +280,22 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		BusinessEntityStatusValueObjectIDType e = new BusinessEntityStatusValueObjectIDType();
 		e.setType("WID");
 		e.setValue(WDAY_STATUS_ID);
-		ids.add(e );
-		value.setID(ids );
+		ids.add(e);
+		value.setID(ids);
 		ReasonForCustomerStatusChangeObjectType reason = new ReasonForCustomerStatusChangeObjectType();
 		List<ReasonForCustomerStatusChangeObjectIDType> reasonIds = new ArrayList<ReasonForCustomerStatusChangeObjectIDType>();
 		ReasonForCustomerStatusChangeObjectIDType reasonId = new ReasonForCustomerStatusChangeObjectIDType();
 		reasonId.setType("WID");
 		reasonId.setValue(WDAY_REASON_ID);
 		reasonIds.add(reasonId);
-		reason.setID(reasonIds );
-		status.setReasonForCustomerStatusChangeReference(reason );
-		status.setCustomerStatusValueReference(value );
-		statusList.add(status );
-		data.setCustomerStatusData(statusList );
+		reason.setID(reasonIds);
+		status.setReasonForCustomerStatusChangeReference(reason);
+		status.setCustomerStatusValueReference(value);
+		statusList.add(status);
+		data.setCustomerStatusData(statusList);
 				
 		put.setCustomerReference(customer.getCustomerReference());
-		put.setCustomerData(data );
+		put.setCustomerData(data);
 		return put ;
 	}
 }

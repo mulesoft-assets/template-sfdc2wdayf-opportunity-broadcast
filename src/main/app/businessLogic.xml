@@ -13,7 +13,6 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/wd-revenue http://www.mulesoft.org/schema/mule/wd-revenue/current/mule-wd-revenue.xsd
-http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
@@ -175,22 +174,22 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 			businessEntityName: payload.Name,
 			contactData: {
 				addressData: [{
-					(addressLineData: [{
+					addressLineData: [{
 						type: "ADDRESS_LINE_1",
 						value: payload.BillingStreet
-					}]) when (payload.BillingStreet != null),
-					(countryReference: {
+					}],
+					countryReference: {
 						ID: [{
 							type: "ISO_3166-1_Alpha-3_Code",
 							value: "USA" when (payload.BillingCountry == "United States") otherwise ("CAN" when (payload.BillingCountry == "Canada") otherwise null)
 						}]
-					}) when (payload.BillingCountry != null),
-					(countryRegionReference: {
+					},
+					countryRegionReference: {
 						ID: [{
 							type: "Country_Region_ID",
 							value: "USA-CA" when (payload.BillingState == "CA") otherwise null
 						}]
-					}) when (payload.BillingState != null),
+					},
 					municipality: payload.BillingCity,
 					postalCode: payload.BillingPostalCode,
 					usageData: [{
@@ -212,23 +211,23 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 						}]						
 					}]
 				},
-				{
-					(addressLineData: [{
+				({
+					addressLineData: [{
 						type: "ADDRESS_LINE_1",
 						value: payload.ShippingStreet
-					}]) when (payload.ShippingStreet != null),
-					(countryReference: {
+					}],
+					countryReference: {
 						ID: [{
 							type: "ISO_3166-1_Alpha-3_Code",
 							value: "USA" when (payload.ShippingCountry == "United States") otherwise ("CAN" when (payload.ShippingCountry == "Canada") otherwise null)
 						}]
-					}) when (payload.ShippingCountry != null),
-					(countryRegionReference: {
+					},
+					countryRegionReference: {
 						ID: [{
 							type: "Country_Region_ID",
 							value: "USA-CA" when (payload.ShippingState == "CA") otherwise null
 						}]
-					}) when (payload.ShippingState != null),
+					},
 					municipality: payload.ShippingCity,
 					postalCode: payload.ShippingPostalCode,
 					usageData: [{
@@ -249,7 +248,10 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 							}]
 						}]						
 					}]
-				}]
+				}) when (payload.ShippingState != null and 
+					payload.ShippingCountry != null and  
+					payload.ShippingStreet != null)
+				]
 			}
 		},
 		currencyReference: {

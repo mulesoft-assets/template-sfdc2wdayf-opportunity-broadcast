@@ -29,13 +29,13 @@ Please review the terms of the license before downloading and using this templat
 # Use Case <a name="usecase"/>
 As a Salesforce admin I want to synchronize opportunities at Closed Won stage from a Salesforce Org to a Workday instance.
 
-Everytime there is an opportunity set to Closed Won stage, the integration will poll for changes from Salesforce source instance and it will be responsible for updating the opportunity in Workday target instance.
+Every time there is an opportunity set to Closed Won stage, the integration will poll for changes from Salesforce source instance and it will be responsible for updating the opportunity in Workday target instance.
 
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 
 # Considerations <a name="considerations"/>
 
-**Note:** This particular Anypoint Template illustrate the synchronization use case between SalesForce and a Workday.
+**Note:** This particular Anypoint Template illustrate the synchronization use case between SalesForce and Workday.
 There are a couple of things you should take into account before running this template:
 
 1. A Workday opportunity requires a reference to a customer. That is why SFDC opportunities without an Account attribute, which is optional there, are filtered.
@@ -175,7 +175,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sfdc.username `user@company.com`
 + sfdc.password `secret`
 + sfdc.securityToken `h0fcC2Y7dnuH7ELk9BhoW0xu`
-+ sfdc.url `https://login.salesforce.com/services/Soap/u/30.0`
++ sfdc.url `https://login.salesforce.com/services/Soap/u/32.0`
 
 # API Calls <a name="apicalls"/>
 Salesforce imposes limits on the number of API Calls that can be made. Therefore calculating this amount may be an important factor to consider. The Anypoint Template calls to the API can be calculated using the formula:

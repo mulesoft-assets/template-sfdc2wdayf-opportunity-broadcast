@@ -13,6 +13,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+
+<!-- 	In this file you should declare all your inbound endpoints and from here control the access to your application -->
     
     <flow name="triggerFlow" processingStrategy="synchronous">
         <poll doc:name="Poll">
@@ -26,6 +28,5 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
         <batch:execute name="syncOpportunitiesBatch" doc:name="Batch Execute"/>
     </flow>
 
-	<!-- 	In this file you should declare all your inbound endpoints and from here control the access to your application -->
     
 </mule>

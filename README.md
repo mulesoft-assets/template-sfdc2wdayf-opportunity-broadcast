@@ -1,5 +1,5 @@
 
-# Anypoint Template: Salesforce to Workday Opportunity Broadcast
+# Anypoint Template: Salesforce to Workday Financials Opportunity Broadcast
 
 + [License Agreement](#licenseagreement)
 + [Use Case](#usecase)

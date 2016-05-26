@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http" 
-xmlns="http://www.mulesoft.org/schema/mule/core" 
-xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
-xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
-xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.7.1" 
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" 
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
@@ -18,14 +19,17 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
     
     <flow name="triggerFlow" processingStrategy="synchronous">
         <poll doc:name="Poll">
-            <fixed-frequency-scheduler frequency="${poll.frequency}" startDelay="${poll.delay}"/>
+            <fixed-frequency-scheduler frequency="${poll.frequencyMillis}" startDelay="${poll.startDelayMillis}"/>
             <watermark variable="lastQueryDate" default-expression="${watermark.default.expression}" selector="MAX" selector-expression="#[payload.LastModifiedDate]"/>
             <processor-chain doc:name="Processor Chain">
-                <sfdc:query config-ref="Salesforce" query="SELECT AccountId,Amount,CloseDate,Id,LastModifiedDate,Name,OwnerId,StageName FROM Opportunity WHERE AccountId != null and IsClosed = true and Workday_Sync__c = false and LastModifiedDate &gt; #[lastQueryDate]" fetchSize="${page.size}" doc:name="query Salesforce 'Closed Won' opportunities"/>
+
+                <sfdc:query config-ref="Salesforce" query="SELECT AccountId, Amount, CloseDate, Id, LastModifiedDate, Name, OwnerId, StageName FROM Opportunity WHERE AccountId != null AND IsClosed = true AND Workday_Sync__c = false AND HasOpportunityLineItem = true AND LastModifiedDate &gt; #[lastQueryDate]" fetchSize="${page.size}" doc:name="query Salesforce 'Closed Won' opportunities"/>
                 <expression-filter expression="#[payload.size() &gt; 0]" doc:name="Filter empty result list"/>
             </processor-chain>
         </poll>
+
         <batch:execute name="syncOpportunitiesBatch" doc:name="Batch Execute"/>
+        <exception-strategy ref="defaultChoiceExceptionStrategy" doc:name="Reference Exception Strategy"/>
     </flow>
 
     

@@ -49,7 +49,7 @@ There are a couple of things you should take into account before running this te
 Custom mappings need to be extended to cover other values.
 
 3. A SFDC opportunity must have some Products associated.
-4. An Opportunity object needs to be extended in Salesforce by a new field called Workday_sync of Checkbox data type. It will store the flag if a record was synchronized by this integration process.
+4. An Opportunity object needs to be extended in Salesforce by a new field called Workday_sync of Checkbox data type. It will store the flag whether a record was synchronized by this integration process.
 
 
 
@@ -110,8 +110,9 @@ There are no particular considerations for this Anypoint Template regarding Work
 ### As destination of data
 
 There are no particular considerations for this Anypoint Template regarding Workday Financials as data destination.
+
 # Run it! <a name="runit"/>
-Simple steps to get Salesforce to Workday Opportunity Broadcast running.
+Simple steps to get Salesforce to Workday Financials Opportunity Broadcast running.
 
 
 ## Running on premise <a name="runonopremise"/>
@@ -162,14 +163,15 @@ Mule Studio provides you with really easy way to deploy your Template directly t
 In order to use this Mule Anypoint Template you need to configure properties (Credentials, configurations, etc.) either in properties file or in CloudHub as Environment Variables. Detail list with examples:
 ### Application configuration
 + page.size `100`
-+ poll.frequency `5000`
-+ poll.delay `0`
-+ watermark.default.expression `YESTERDAY`
++ poll.frequencyMillis `5000`
++ poll.startDelayMillis `0`
++ watermark.default.expression `2016-05-24T10:00:00.000Z`
 
 #### Workday Connector configuration
 + wday.user `user@company`
 + wday.password `secret`
-+ wday.endpoint=https://impl-cc.workday.com/ccx/service/company/Human_Resources/v21.1
++ wday.tenant `tenant_name`
++ wday.hostname `e.g. impl-cc.workday.com`
 
 #### Salesforce Connector
 + sfdc.username `user@company.com`
@@ -216,8 +218,7 @@ Several message processors constitute these high level actions that fully implem
 
 1. Before the Input stage the Anypoint Template will query all the existing opportunities that have been updated after watermark.
 2. During the Process stage, firstly a Salesforce Account owning the processed Opportunity will be used to get a Workday Customer. If not existing, a new one is created.   
-3. Next, a Workday Opportunity is retrieved and a Salesforce Opportunity is updated with a flag so it is not processed on the next run.
-4. If the Workday opportunity does not exist, then it is created.  
+3. Workday opportunity is created and Workday_sync flag is set in Salesforce to prevent further synchronization.  
 5. Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
 
 

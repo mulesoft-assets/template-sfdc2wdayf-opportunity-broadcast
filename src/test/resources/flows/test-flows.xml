@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:wd-revenue="http://www.mulesoft.org/schema/mule/wd-revenue" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.7.1"
+<mule xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" 
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
+	xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" 
+	xmlns:wd-connector="http://www.mulesoft.org/schema/mule/wd-connector" 
+	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
-http://www.mulesoft.org/schema/mule/wd-revenue http://www.mulesoft.org/schema/mule/wd-revenue/current/mule-wd-revenue.xsd">
+http://www.mulesoft.org/schema/mule/wd-connector http://www.mulesoft.org/schema/mule/wd-connector/current/mule-wd-connector.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+   
     <sub-flow name="createSFDCAccountFlow">
         <sfdc:create config-ref="Salesforce" type="Account" doc:name="Salesforce">
             <sfdc:objects ref="#[payload]"/>
@@ -19,18 +29,146 @@ http://www.mulesoft.org/schema/mule/wd-revenue http://www.mulesoft.org/schema/mu
         </sfdc:create>
         <logger message="opp created: #[payload]" level="INFO" doc:name="Logger"/>
     </sub-flow>
-    <sub-flow name="retrieveWdayCustomerFlow">
-        <wd-revenue:get-customers config-ref="Workday_Revenue_Management" getCustomersRequest-ref="#[org.mule.templates.CustomerRequest.getCustomer(payload)]" doc:name="Workday Revenue Management"/>
-    </sub-flow>
-    <sub-flow name="retrieveWdayOpportunityFlow">
-        <wd-revenue:get-opportunities config-ref="Workday_Revenue_Management" doc:name="Workday Revenue Management" getOpportunitiesRequest-ref="#[new com.workday.revenue.GetOpportunitiesRequestType()]"/>
-    </sub-flow>
-    <sub-flow name="inactiveWdayCustomerFlow">
-        <wd-revenue:put-customer config-ref="Workday_Revenue_Management" doc:name="Workday Revenue Management"/>
-    </sub-flow>
-    <sub-flow name="inactivateWdayOpportunity">
-        <wd-revenue:put-opportunity config-ref="Workday_Revenue_Management" doc:name="Workday Revenue Management"/>
-    </sub-flow>
+    <flow name="retrieveWorkdayCustomer">
+        <dw:transform-message doc:name="Create Get Customers XML Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Get_Customers_Request: {
+		ns0#Request_Criteria: {
+			ns0#Customer_Reference_ID: payload.Id
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Get_Customers" doc:name="Get Customers"/>
+        <dw:transform-message doc:name="to Java">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%namespace ns0 urn:com.workday/bsvc
+---
+payload.ns0#Get_Customers_Response.*ns0#Response_Data.*ns0#Customer[0].ns0#Customer_Data.ns0#Customer_Name
+when payload.ns0#Get_Customers_Response.*ns0#Response_Results.ns0#Total_Results != 0
+otherwise null]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="retrieveWorkdayOpportunity">
+        <dw:transform-message doc:name="Build GetOpportunities XML Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Get_Opportunities_Request: {
+		ns0#Request_References: {
+			ns0#Opportunity_Reference: {
+				ns0#ID @(ns0#type: "Opportunity_Reference_ID"): payload.Id
+			}
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Get_Opportunities" doc:name="Get Opportunities"/>
+        <dw:transform-message doc:name="to Java">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%namespace ns0 urn:com.workday/bsvc
+---
+payload.ns0#Get_Opportunities_Response.*ns0#Response_Data[0].*ns0#Opportunity.ns0#Opportunity_Data[0].ns0#Opportunity_Name
+when payload.ns0#Get_Opportunities_Response.*ns0#Response_Results.ns0#Total_Results != 0
+otherwise null]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="inactivateWdayCustomer">
+        <logger message="InactivateCustomer: #[payload]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Create Get Customers XML Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Get_Customers_Request: {
+		ns0#Request_Criteria: {
+			ns0#Customer_Reference_ID: payload.Id
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Get_Customers" doc:name="Get Customers"/>
+        <dw:transform-message doc:name="Create Put Customer XML Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Put_Customer_Request: {
+		ns0#Customer_Data: {
+			ns0#Customer_ID: payload.ns0#Get_Customers_Response.*ns0#Response_Data[0].*ns0#Customer.ns0#Customer_Data[0].ns0#Customer_ID,
+			ns0#Customer_Reference_ID: payload.ns0#Get_Customers_Response.*ns0#Response_Data[0].*ns0#Customer.ns0#Customer_Data[0].ns0#Customer_Reference_ID,
+			ns0#Customer_Name: payload.ns0#Get_Customers_Response.*ns0#Response_Data[0].*ns0#Customer.ns0#Customer_Data[0].ns0#Customer_Name,
+			ns0#Customer_Category_Reference: payload.ns0#Get_Customers_Response.*ns0#Response_Data[0].*ns0#Customer.ns0#Customer_Data[0].ns0#Customer_Category_Reference,
+			ns0#Business_Entity_Data: {
+				ns0#Business_Entity_Name: payload.ns0#Get_Customers_Response.*ns0#Response_Data[0].*ns0#Customer.ns0#Customer_Data[0].ns0#Business_Entity_Data.ns0#Business_Entity_Name
+			},
+			ns0#Customer_Status_Data: {
+				ns0#Customer_Status_Value_Reference: {
+					ns0#ID @(ns0#type: "WID"): p('wday.status.id')
+				},
+				ns0#Reason_for_Customer_Status_Change_Reference: {
+					ns0#ID @(ns0#type: "WID"): p('wday.reason.id')
+				}
+			}
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Put_Customer" doc:name="Put Customer"/>
+    </flow>
+    <flow name="inactivateWdayOpportunity">
+        <logger message="DELETE WDAY OPP: #[payload]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Build GetOpportunities XML Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Get_Opportunities_Request: {
+		ns0#Request_References: {
+			ns0#Opportunity_Reference: {
+				ns0#ID @(ns0#type: "Opportunity_Reference_ID"): payload.Id
+			}
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Get_Opportunities" doc:name="Get Opportunities"/>
+        <dw:transform-message doc:name="Build Put Opportunity XML Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Put_Opportunity_Request: {
+		ns0#Opportunity_Reference: payload.ns0#Get_Opportunities_Response.*ns0#Response_Data.*ns0#Opportunity[0].ns0#Opportunity_Reference,
+		ns0#Opportunity_Data: {
+			ns0#Opportunity_ID: payload.ns0#Get_Opportunities_Response.*ns0#Response_Data.*ns0#Opportunity[0].ns0#Opportunity_Data.ns0#Opportunity_ID,
+			ns0#Inactive: true,
+			ns0#Opportunity_Name: payload.ns0#Get_Opportunities_Response.*ns0#Response_Data.*ns0#Opportunity[0].ns0#Opportunity_Data.ns0#Opportunity_Name,
+			ns0#Opportunity_Status_Reference: {
+				ns0#ID @(ns0#type: "WID"): p('wday.opportunity.status.id')
+			},
+			ns0#Currency_Reference: payload.ns0#Get_Opportunities_Response.*ns0#Response_Data.*ns0#Opportunity[0].ns0#Opportunity_Data.ns0#Currency_Reference,
+			ns0#Customer_Reference: payload.ns0#Get_Opportunities_Response.*ns0#Response_Data.*ns0#Opportunity[0].ns0#Opportunity_Data.ns0#Customer_Reference,
+			ns0#Opportunity_Line_Replacement_Data: payload.ns0#Get_Opportunities_Response.*ns0#Response_Data.*ns0#Opportunity[0].ns0#Opportunity_Data.ns0#Opportunity_Line_Replacement_Data
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Put_Opportunity" doc:name="Put Opportunity"/>
+    </flow>
+
     <sub-flow name="deleteSFDCDataFlow">
         <sfdc:delete config-ref="Salesforce" doc:name="delete SFDC data"/>
         <logger message="SFDC delete: #[payload]" level="INFO" doc:name="Logger"/>

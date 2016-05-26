@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
-    xmlns:wd-revenue="http://www.mulesoft.org/schema/mule/wd-revenue" 
+<mule xmlns:wd-connector="http://www.mulesoft.org/schema/mule/wd-connector" 
+	xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" 
+	xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" 
+	xmlns:json="http://www.mulesoft.org/schema/mule/json" 
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
     xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
 	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
-	version="EE-3.7.1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -15,53 +17,61 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 http://www.mulesoft.org/schema/mule/wd-revenue http://www.mulesoft.org/schema/mule/wd-revenue/current/mule-wd-revenue.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
-http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/wd-connector http://www.mulesoft.org/schema/mule/wd-connector/current/mule-wd-connector.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
 
     <batch:job name="syncOpportunitiesBatch" max-failed-records="-1">
         <batch:process-records>
             <batch:step name="findSFDCAccountStep">
                 <batch:set-record-variable variableName="sfdcOpportunity" value="#[payload]" doc:name="store SFDC Opportunity"/>
-                <logger message="SFDC opportunity: #[payload]" level="INFO" doc:name="log the opportunity"/>
-                <enricher source="#[payload]" target="#[recordVars['accountInSFDC']]" doc:name="store SFDC Account in 'recordVars['accountInSFDC']">
-                    <sfdc:query-single config-ref="Salesforce" query="SELECT Industry, BillingCity,BillingCountry,BillingPostalCode,BillingState,BillingStreet,Id,Name,Phone,ShippingCity,ShippingCountry,ShippingPostalCode,ShippingState,ShippingStreet FROM Account where Id = '#[payload['AccountId']]'" doc:name="query Salesforce Account"/>
+
+                <enricher source="#[payload]" target="#[recordVars.accountInSFDC]" doc:name="store in 'recordVars.accountInSFDC'">
+                    <sfdc:query-single config-ref="Salesforce" query="dsql:SELECT Industry, BillingCity, BillingCountry, BillingPostalCode, BillingState, BillingStreet, Id, Name, Phone, ShippingCity, ShippingCountry, ShippingPostalCode, ShippingState, ShippingStreet FROM Account where Id = '#[payload.AccountId]'" doc:name="query Salesforce Account"/>
                 </enricher>
             </batch:step>
             <batch:step name="findWorkdayCustomerStep">
-                <enricher source="#[payload]" target="#[recordVars['accountInWD']]" doc:name="store Workday Customer in 'recordVars['accountInWD']'">
+                <enricher source="#[payload]" target="#[recordVars.accountInWD]" doc:name="store in 'recordVars.accountInWD'">
                     <processor-chain doc:name="Processor Chain">
                         <dw:transform-message doc:name="transform Map To GetCustomersRequestType">
                             <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
 ---
 {
-	requestReferences: [{
-		customerReference: [{
-			ID: [{
-				type: "Customer_Reference_ID",
-				value: payload.AccountId
-			}]
-		}]
-	}]
-} as :object {
-	class : "com.workday.revenue.GetCustomersRequestType"
+	ns0#Get_Customers_Request: {
+		ns0#Request_Criteria: {
+			ns0#Customer_Reference_ID: payload.AccountId
+		}
+	}
 }]]></dw:set-payload>
                         </dw:transform-message>
+                        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Get_Customers" doc:name="GetCustomer"/>
 
-                        <wd-revenue:get-customers config-ref="Workday_Revenue_Management" doc:name="find Customer"/>
+                        <dw:transform-message doc:name="extract data">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%namespace ns0 urn:com.workday/bsvc
+---
+payload.ns0#Get_Customers_Response.*ns0#Response_Data[0].ns0#Customer[0] 
+when payload.ns0#Get_Customers_Response.*ns0#Response_Results[0].ns0#Total_Results > 0 
+otherwise null
+]]></dw:set-payload>
+                        </dw:transform-message>
+
+
 
                     </processor-chain>
                 </enricher>
             </batch:step>
-            <batch:step name="createCustomerStep" accept-policy="ONLY_FAILURES">
+            <batch:step name="createCustomerStep" >
                 <flow-ref name="createCustomerSubflow" doc:name="call createCustomerSubflow"/>
             </batch:step>
-            <batch:step name="findWorkdayOpportunityAndUpdateSFDCOpportunityStep" accept-policy="ALL">
-                <flow-ref name="findWorkdayOpportunitySubflow" doc:name="call findWorkdayOpportunitySubflow"/>
-                
-            </batch:step>
-            <batch:step name="createWorkdayOpportunityStep" accept-policy="ONLY_FAILURES">
+
+            <batch:step name="createWorkdayOpportunityStep"  >
                 <flow-ref name="createWorkdayOpportunitySubflow" doc:name="call createOpportunitySubflow"/>                
             </batch:step>
+
         </batch:process-records>
         <batch:on-complete>
             <json:object-to-json-transformer doc:name="transform BatchJobInstance to JSON"/>
@@ -69,213 +79,147 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
         </batch:on-complete>
     </batch:job>
     <sub-flow name="createWorkdayOpportunitySubflow">
-        <set-payload value="#[recordVars['sfdcOpportunity']]" doc:name="bring in SFDC Opportunity"/>
-    	<sfdc:query config-ref="Salesforce" query="SELECT Id,Description,OpportunityId,Quantity,TotalPrice,UnitPrice FROM OpportunityLineItem where OpportunityId = '#[payload['Id']]'" doc:name="query Opportunity Lines"/>
-        <dw:transform-message doc:name="transform Map to PutOpportunityRequestType">
+
+    	<sfdc:query config-ref="Salesforce" query="SELECT Id,Name,Description,OpportunityId,Quantity,TotalPrice,UnitPrice FROM OpportunityLineItem where OpportunityId = '#[recordVars.sfdcOpportunity.Id]'" doc:name="query Opportunity Lines"/>
+
+        <dw:transform-message doc:name="transform Map to Put Opportunity XML request">
             <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
 ---
 {
-	opportunityData: {
-		currencyReference: {
-			ID: [{
-				type: "Currency_ID",
-				value: "USD"
-			}]
-		},
-		customerReference: {
-			ID: [{
-				type: "Customer_Reference_ID",
-				value: recordVars.sfdcOpportunity.AccountId
-			}]
-		},
-		opportunityID: recordVars.sfdcOpportunity.Id,
-		opportunityLineReplacementData: payload map {
-			productDescription: $.Description,
-			quantity: $.Quantity,
-			unitCost: $.UnitPrice
-		},
-		opportunityName: recordVars.sfdcOpportunity.Name,
-		opportunityStatusReference: {
-			ID: [{
-				type: "Opportunity_Status_Code",
-				value: "W"
-			}]
+	ns0#Put_Opportunity_Request: {
+		ns0#Opportunity_Data: {
+			ns0#Opportunity_ID: recordVars.sfdcOpportunity.Id,
+			ns0#Opportunity_Name: recordVars.sfdcOpportunity.Name,
+			ns0#Opportunity_Status_Reference: {
+				ns0#ID @(ns0#type: "Opportunity_Status_Code"): "W"
+			},
+			ns0#Currency_Reference: {
+				ns0#ID @(ns0#type: "Currency_ID"): "USD"
+			},
+			ns0#Customer_Reference: {
+				ns0#ID @(ns0#type: "Customer_Reference_ID"): recordVars.sfdcOpportunity.AccountId
+			},
+			 (payload map  ns0#Opportunity_Line_Replacement_Data: {
+					ns0#Product_Description: $.Name,
+					ns0#Unit_Cost: $.UnitPrice,
+					ns0#Quantity: $.Quantity
+				
+			})
+			
 		}
 	}
-} as :object {
-	class : "com.workday.revenue.PutOpportunityRequestType"
 }]]></dw:set-payload>
         </dw:transform-message>
-
-                <wd-revenue:put-opportunity config-ref="Workday_Revenue_Management" doc:name="create Opportunity"/>
-        <dw:transform-message doc:name="transform PutOpportunityResponseType To Map">
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Put_Opportunity" doc:name="Put Opportunity"/>
+        <dw:transform-message doc:name="transform PutOpportunity XML response To Map">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/java
+%namespace ns0 urn:com.workday/bsvc
 ---
 {
-	Id : payload.opportunityReference.ID[1].value,
+	Id : (payload.ns0#Put_Opportunity_Response.ns0#Opportunity_Reference.*ns0#ID filter ($.@ns0#type == "Opportunity_Reference_ID"))[0],
 	Workday_Sync__c : true	
 }
 ]]></dw:set-payload>
         </dw:transform-message>
+        <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="update Workday Sync Status"/>
 
-                <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="update Workday Sync Status">
-
-                </sfdc:update-single>
-                <logger message="#[payload]" level="INFO" doc:name="log the update result"/>
 	</sub-flow>
-    <sub-flow name="findWorkdayOpportunitySubflow">
-        <set-payload value="#[recordVars['sfdcOpportunity']]" doc:name="bring in SFDC Opportunity"/>
-        <dw:transform-message doc:name="transform Map To GetOpportunitiesRequestType">
-            <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
----
-{
-	requestReferences: {
-		opportunityReference: [{
-			ID: [{
-				type: "Opportunity_Reference_ID",
-				value: payload.Id
-			}]
-		} ]
-	}
-} as :object {
-	class : "com.workday.revenue.GetOpportunitiesRequestType"
-}]]></dw:set-payload>
-        </dw:transform-message>
 
-                <wd-revenue:get-opportunities config-ref="Workday_Revenue_Management" doc:name="find Opportunity"/>
-        <dw:transform-message doc:name="prepare for Update">
-            <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
----
-{
-	Id : payload.responseData[0].opportunity[0].opportunityData.opportunityID,
-	Workday_Sync__c : true	
-}
-]]></dw:set-payload>
-        </dw:transform-message>
-
-                <sfdc:update-single config-ref="Salesforce" type="Opportunity" doc:name="update Workday Sync Status">
-                    <sfdc:object ref="#[payload]"/>
-                </sfdc:update-single>
-        <logger message="#[payload]" level="INFO" doc:name="log the update result"/>
-    </sub-flow>
     <sub-flow name="createCustomerSubflow">
-        <set-payload value="#[recordVars['accountInSFDC']]" doc:name="bring in SFDC Account Info"/>
-        <dw:transform-message doc:name="transform Map to PutCustomerRequestType">
+
+
+        <dw:transform-message doc:name="transform Map to Put Customer XML Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 urn:com.workday/bsvc
+---
+using (sfdcAccount = recordVars.accountInSFDC)
+{
+	ns0#Put_Customer_Request: {
+		ns0#Customer_Data: {
+			ns0#Customer_Reference_ID: sfdcAccount.Id,
+			ns0#Customer_Name: sfdcAccount.Name,
+			ns0#Customer_Category_Reference: {
+				ns0#ID @(ns0#type: "Customer_Category_ID"): "CUSTOMER_CATEGORY-5" when (sfdcAccount.Industry == "Technology") 
+						otherwise 
+					  	("CUSTOMER_CATEGORY-4" when (sfdcAccount.Industry == "Hospitality") otherwise "CUSTOMER_CATEGORY-5")
+			},
+			ns0#Business_Entity_Data: {
+				ns0#Business_Entity_Name: sfdcAccount.Name,
+				ns0#Contact_Data: {
+					(ns0#Address_Data: {
+						ns0#Country_Reference: {
+							ns0#ID @(ns0#type: "ISO_3166-1_Alpha-3_Code"): "USA" when (sfdcAccount.BillingCountry == "United States") 
+									otherwise 
+									("CAN" when (sfdcAccount.BillingCountry == "Canada") otherwise "USA")
+						},
+						ns0#Address_Line_Data @(ns0#Type: "ADDRESS_LINE_1"): sfdcAccount.BillingStreet,
+						ns0#Municipality: sfdcAccount.BillingCity,
+						ns0#Country_Region_Reference: {
+							ns0#ID @(ns0#type: "Country_Region_ID"): "USA-CA" when (sfdcAccount.BillingState == "CA") otherwise "USA-CA"
+						},
+						ns0#Postal_Code: sfdcAccount.BillingPostalCode,
+						ns0#Usage_Data @(ns0#Public: false): {
+							ns0#Type_Data @(ns0#Primary: true): {
+								ns0#Type_Reference: {
+									ns0#ID @(ns0#type: "Communication_Usage_Type_ID"): "BUSINESS"
+								}
+							},
+							ns0#Use_For_Reference: {
+								ns0#ID @(ns0#type: "Communication_Usage_Behavior_ID"): "BILLING"
+							}
+						}
+					}) when (sfdcAccount.BillingState != null and 
+								sfdcAccount.BillingCountry != null and  
+								sfdcAccount.BillingStreet != null),
+					
+					(ns0#Address_Data: {	
+						ns0#Country_Reference: {
+							ns0#ID @(ns0#type: "ISO_3166-1_Alpha-3_Code"): "USA" when (sfdcAccount.ShippingCountry == "United States") 
+									otherwise 
+									("CAN" when (sfdcAccount.ShippingCountry == "Canada") otherwise "USA")
+						},
+						ns0#Address_Line_Data @(ns0#Type: "ADDRESS_LINE_1"): sfdcAccount.ShippingStreet,
+						ns0#Municipality: sfdcAccount.ShippingCity,
+						ns0#Country_Region_Reference: {
+							ns0#ID @(ns0#type: "Country_Region_ID"): "USA-CA" when (sfdcAccount.ShippingState == "CA") otherwise "USA-CA"
+						},
+						ns0#Postal_Code: sfdcAccount.ShippingPostalCode,
+						ns0#Usage_Data @(ns0#Public: false): {
+							ns0#Type_Data @(ns0#Primary: false): {
+								ns0#Type_Reference: {
+									ns0#ID @(ns0#type: "Communication_Usage_Type_ID"): "BUSINESS"
+								}
+							},
+							ns0#Use_For_Reference: {
+								ns0#ID @(ns0#type: "Communication_Usage_Behavior_ID"): "SHIPPING"
+							}
+						}
+					}) when (sfdcAccount.ShippingState != null and 
+								sfdcAccount.ShippingCountry != null and  
+								sfdcAccount.ShippingStreet != null)					
+				}
+			},
+			ns0#Currency_Reference: {
+				ns0#ID @(ns0#type: "Currency_ID"): "USD" when (sfdcAccount.BillingCountry == "United States") 
+					otherwise 
+					("CAD" when (sfdcAccount.BillingCountry == "Canada") otherwise "USD")
+			}
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <wd-connector:invoke config-ref="Workday__Basic" type="Revenue_Management||Put_Customer" doc:name="Put Customer"/>
+        <dw:transform-message doc:name="XML to Java">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/java
 ---
-{
-	customerData: {
-		businessEntityData: {			
-			businessEntityName: payload.Name,
-			contactData: {
-				addressData: [{
-					addressLineData: [{
-						type: "ADDRESS_LINE_1",
-						value: payload.BillingStreet
-					}],
-					countryReference: {
-						ID: [{
-							type: "ISO_3166-1_Alpha-3_Code",
-							value: "USA" when (payload.BillingCountry == "United States") otherwise ("CAN" when (payload.BillingCountry == "Canada") otherwise null)
-						}]
-					},
-					countryRegionReference: {
-						ID: [{
-							type: "Country_Region_ID",
-							value: "USA-CA" when (payload.BillingState == "CA") otherwise null
-						}]
-					},
-					municipality: payload.BillingCity,
-					postalCode: payload.BillingPostalCode,
-					usageData: [{
-						public: false,
-						typeData: [{
-							primary: true,
-							typeReference: {
-								ID: [{
-									type: "Communication_Usage_Type_ID",
-									value: "BUSINESS"
-								}]
-							}
-						}],
-						useForReference: [{
-							ID: [{
-								type: "Communication_Usage_Behavior_ID",
-								value: "BILLING"
-							}]
-						}]						
-					}]
-				},
-				({
-					addressLineData: [{
-						type: "ADDRESS_LINE_1",
-						value: payload.ShippingStreet
-					}],
-					countryReference: {
-						ID: [{
-							type: "ISO_3166-1_Alpha-3_Code",
-							value: "USA" when (payload.ShippingCountry == "United States") otherwise ("CAN" when (payload.ShippingCountry == "Canada") otherwise null)
-						}]
-					},
-					countryRegionReference: {
-						ID: [{
-							type: "Country_Region_ID",
-							value: "USA-CA" when (payload.ShippingState == "CA") otherwise null
-						}]
-					},
-					municipality: payload.ShippingCity,
-					postalCode: payload.ShippingPostalCode,
-					usageData: [{
-						public: false,
-						typeData: [{
-							primary: false,
-							typeReference: {
-								ID: [{
-									type: "Communication_Usage_Type_ID",
-									value: "BUSINESS"
-								}]
-							}
-						}],
-						useForReference: [{
-							ID: [{
-								type: "Communication_Usage_Behavior_ID",
-								value: "SHIPPING"
-							}]
-						}]						
-					}]
-				}) when (payload.ShippingState != null and 
-					payload.ShippingCountry != null and  
-					payload.ShippingStreet != null)
-				]
-			}
-		},
-		currencyReference: {
-			ID: [{
-				type: "Currency_ID",
-				value: "USD" when (payload.BillingCountry == "United States") otherwise ("CAD" when (payload.BillingCountry == "Canada") otherwise null)
-			}]
-		},
-		customerCategoryReference: {
-			ID: [{
-				type: "Customer_Category_ID",
-				value: "CUSTOMER_CATEGORY-5" when (payload.Industry == "Technology") otherwise 
-					  ("CUSTOMER_CATEGORY-4" when (payload.Industry == "Hospitality") otherwise null)
-			}]
-		},
-		customerName: payload.Name,
-		customerReferenceID: payload.Id		
-	}
-} as :object {
-	class : "com.workday.revenue.PutCustomerRequestType"
-}]]></dw:set-payload>
+payload]]></dw:set-payload>
         </dw:transform-message>
 
-        <wd-revenue:put-customer config-ref="Workday_Revenue_Management" doc:name="create Customer"/>
     </sub-flow>                
 	
 

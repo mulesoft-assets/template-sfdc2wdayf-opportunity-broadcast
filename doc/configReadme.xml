@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<configuration>
+	<placeholders>
+		<placeholder id="template_name">Salesforce to Workday Financials Opportunity Broadcast</placeholder>
+	</placeholders>
+	<sections>
+		<section id="use_case">
+As a Salesforce admin I want to synchronize opportunities at Closed Won stage from a Salesforce Org to a Workday instance.
+
+Every time there is an opportunity set to Closed Won stage, the integration will poll for changes from Salesforce source instance and it will be responsible for updating the opportunity in Workday target instance.
+
+Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
+  
+		</section>
+		<section id="considerations">
+<![CDATA[
+**Note:** This particular Anypoint Template illustrate the synchronization use case between SalesForce and Workday.
+There are a couple of things you should take into account before running this template:
+
+1. A Workday opportunity requires a reference to a customer. That is why SFDC opportunities without an Account attribute, which is optional there, are filtered.
+2. A SFDC Account must have all Address Information data filled out. Furthermore, the template only makes use of following attribute and their values:
+
+	* Country: United States, Canada
+	* State: CA
+	* Industry: Technology, Hospitality 
+	* Postal Code: a valid code from California, e.g. 90210.
+
+Custom mappings need to be extended to cover other values.
+
+3. A SFDC opportunity must have some Products associated.
+4. An Opportunity object needs to be extended in Salesforce by a new field called Workday_sync of Checkbox data type. It will store the flag if a record was synchronized by this integration process. 
+		
+]]>
+		</section>	
+		<section id="application_configuration">
+		<![CDATA[
++ page.size `100`
++ scheduler.frequency `5000`
++ scheduler.start.delay `0`
++ watermark.default.expression `2018-01-02T15:53:00Z`
+
+#### Workday Connector configuration
++ wday.username `user@company`
++ wday.password `secret`
++ wday.host=https://impl-cc.workday.com/ccx/service/company/Human_Resources/v21.1
++ wday tenant `tenant_name`
+
+#### Salesforce Connector
++ sfdc.username `user@company.com`
++ sfdc.password `secret`
++ sfdc.securityToken `h0fcC2Y7dnuH7ELk9BhoW0xu`
+]]>
+
+		</section>
+		<section id="api_calls">
+		<![CDATA[
+Salesforce imposes limits on the number of API Calls that can be made. Therefore calculating this amount may be an important factor to consider. The Anypoint Template calls to the API can be calculated using the formula:
+
+***1 + X + X / 200***
+
+Being ***X*** the number of Accounts to be synchronized on each run. 
+
+The division by ***200*** is because, by default, Accounts are gathered in groups of 200 for each Upsert API Call in the commit step.	
+
+For instance if 10 records are fetched from origin instance, then 12 api calls will be made (1 + 10 + 1).		
+]]>
+		</section>
+		<section id="default_endpoints_xml">
+		<![CDATA[
+This is file is conformed by a Flow containing the endpoints for triggering the template and retrieving the objects that meet the defined criteria in the query. And then executing the batch job process with the query results.
+]]>
+		</section>
+		<section id="default_business_logic_xml">
+		<![CDATA[
+This file holds the functional aspect of the Anypoint Template, directed by one flow responsible of conducting the business logic.
+
+Functional aspect of the Anypoint Template is implemented on this XML, directed by one flow that will poll for Salesforce updates.
+Several message processors constitute these high level actions that fully implement the logic of this Anypoint Template:
+
+1. Firstly Anypoint Template will query all the existing opportunities that have been updated after watermark.
+2. During the Process stage, firstly a Salesforce Account owning the processed Opportunity will be used to create a Workday Customer.
+3. Next, a Workday Opportunity is created and a Salesforce Opportunity is updated with a flag so it is not processed on the next run.
+4. Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
+ 
+]]>
+		</section>
+		
+	</sections>
+</configuration>

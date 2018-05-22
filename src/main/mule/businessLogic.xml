@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:workday="http://www.mulesoft.org/schema/mule/workday" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/workday http://www.mulesoft.org/schema/mule/workday/current/mule-workday.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+
+	<flow name="businessLogicFlow" doc:id="8759532e-79b7-4789-990c-dc8e162bfd67">
+		<batch:job jobName="migrateObjectsBatch" doc:id="79b373e6-1aeb-43a9-9dfe-8ac0d2f31fdc"
+			maxFailedRecords="100">
+			<batch:process-records>
+				<batch:step name="findSFDCAccountStep" doc:id="db8f1c93-7f07-4899-be4b-f49d0c1eeaf5">
+					<salesforce:query-single doc:name="Select Account from SFDC"
+						doc:id="1d55d2a0-636d-42b1-a031-bc853775dcbf" config-ref="Salesforce_Config"
+						target="accountInSFDC">
+						<salesforce:salesforce-query>SELECT Industry, BillingCity,
+							BillingCountry, BillingPostalCode, BillingState, BillingStreet,
+							Id, Name, Phone, ShippingCity, ShippingCountry,
+							ShippingPostalCode, ShippingState, ShippingStreet FROM Account
+							WHERE Id = ':id'</salesforce:salesforce-query>
+						<salesforce:parameters><![CDATA[#[output applicaton/java
+---
+{
+	"id" : payload.AccountId
+}]]]></salesforce:parameters>
+					</salesforce:query-single>
+					<ee:transform doc:name="push Account to payload"
+						doc:id="eb0ba7e9-3cc0-4fd0-b255-ad1e60737a9b">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload ++ {accountInSFDC: vars.accountInSFDC}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+				</batch:step>
+				<batch:step name="submitCustomerStep" doc:id="2ae0546a-0c86-4358-9391-118099ea53a4">
+					<ee:transform doc:name="prepare submit customer request"
+						doc:id="3ceeddde-b495-46af-aa79-ab064f982ca2">
+						<ee:message>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="submitCustomerRequest" ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 urn:com.workday/bsvc
+var sfdcAccount = payload.accountInSFDC
+---
+
+{
+	ns0#Submit_Customer_Request: {
+		ns0#Customer_Data: {
+			ns0#Customer_Reference_ID: sfdcAccount.Id,
+			ns0#Customer_Name: sfdcAccount.Name,
+			ns0#Customer_Category_Reference: {
+				ns0#ID @(ns0#"type": "Customer_Category_ID"): if (sfdcAccount.Industry == "Technology") "CUSTOMER_CATEGORY-5"
+						else if  (sfdcAccount.Industry == "Hospitality") "CUSTOMER_CATEGORY-4"
+                        else "CUSTOMER_CATEGORY-5"
+			},
+			ns0#Business_Entity_Data: {
+				ns0#Business_Entity_Name: sfdcAccount.Name,
+				ns0#Contact_Data: {
+					(ns0#Address_Data: {
+						ns0#Country_Reference: {
+							ns0#ID @(ns0#"type": "ISO_3166-1_Alpha-3_Code"): if (sfdcAccount.BillingCountry == "United States") "USA"
+									else if  (sfdcAccount.BillingCountry == "Canada") "CAN"
+                                    else "USA"
+						},
+						ns0#Address_Line_Data @(ns0#Type: "ADDRESS_LINE_1"): sfdcAccount.BillingStreet,
+						ns0#Municipality: sfdcAccount.BillingCity,
+						ns0#Country_Region_Reference: {
+							ns0#ID @(ns0#"type": "Country_Region_ID"): if (sfdcAccount.BillingState == "CA") "USA-CA"
+                            else if (sfdcAccount.BillingState == "CO") "USA-CO"
+                            else "USA-CA"
+						},
+						ns0#Postal_Code: sfdcAccount.BillingPostalCode,
+						ns0#Usage_Data @(ns0#Public: false): {
+							ns0#Type_Data @(ns0#Primary: true): {
+								ns0#Type_Reference: {
+									ns0#ID @(ns0#"type": "Communication_Usage_Type_ID"): "BUSINESS"
+								}
+							},
+							ns0#Use_For_Reference: {
+								ns0#ID @(ns0#"type": "Communication_Usage_Behavior_ID"): "BILLING"
+							}
+						}
+					}) if (sfdcAccount.BillingState != null and 
+								sfdcAccount.BillingCountry != null and  
+								sfdcAccount.BillingStreet != null),
+					
+					(ns0#Address_Data: {	
+						ns0#Country_Reference: {
+							ns0#ID @(ns0#"type": "ISO_3166-1_Alpha-3_Code"):  if (sfdcAccount.ShippingCountry == "United States") "USA"
+                                    else if (sfdcAccount.ShippingCountry == "Canada") "CAN"
+                                    else "USA"
+						},
+						ns0#Address_Line_Data @(ns0#"type": "ADDRESS_LINE_1"): sfdcAccount.ShippingStreet,
+						ns0#Municipality: sfdcAccount.ShippingCity,
+						ns0#Country_Region_Reference: {
+							ns0#ID @(ns0#"type": "Country_Region_ID"): if (sfdcAccount.ShippingState == "CA") "USA-CA"
+                            else if (sfdcAccount.ShippingState == "CO") "USA-CO" else "USA-CA"
+						},
+						ns0#Postal_Code: sfdcAccount.ShippingPostalCode,
+						ns0#Usage_Data @(ns0#Public: false): {
+							ns0#Type_Data @(ns0#Primary: false): {
+								ns0#Type_Reference: {
+									ns0#ID @(ns0#"type": "Communication_Usage_Type_ID"): "BUSINESS"
+								}
+							},
+							ns0#Use_For_Reference: {
+								ns0#ID @(ns0#"type": "Communication_Usage_Behavior_ID"): "SHIPPING"
+							}
+						}
+					}) if (sfdcAccount.ShippingState != null and 
+								sfdcAccount.ShippingCountry != null and  
+								sfdcAccount.ShippingStreet != null)					
+				}
+			},
+			ns0#Currency_Reference: {
+				ns0#ID @(ns0#"type": "Currency_ID"): if (sfdcAccount.BillingCountry == "United States") "USD"
+					else if (sfdcAccount.BillingCountry == "Canada") "CAD"
+                    else "USD"
+			}
+		}
+	}
+}]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<workday:invoke doc:name="Invoke" doc:id="c8745275-2a01-4fd2-8dc4-53aa54287480" config-ref="Workday_Config" service="Revenue_Management" operation="Submit_Customer" target="submitCustomerResponse">
+						<workday:message >
+							<workday:body ><![CDATA[#[vars.submitCustomerRequest]]]></workday:body>
+						</workday:message>
+					</workday:invoke>
+				</batch:step>
+				<batch:step name="createOpportunityStep" doc:id="ff35d45f-9d50-4697-ab9e-5a4551eada4c" >
+					<salesforce:query doc:name="Select OpportunityLineItems from SFDC" doc:id="3adb6246-fbb6-4857-b495-00fd1a6cbfa7" config-ref="Salesforce_Config" target="opportunityLineItems">
+						<salesforce:salesforce-query >SELECT Id,Name,Description,OpportunityId,Quantity,TotalPrice,UnitPrice FROM OpportunityLineItem WHERE OpportunityId = ':id'</salesforce:salesforce-query>
+						<salesforce:parameters ><![CDATA[#[output applicaton/java
+---
+{
+	"id" : payload.Id
+}]]]></salesforce:parameters>
+					</salesforce:query>
+					<ee:transform doc:name="prepare put Opportunity request" doc:id="637d4e42-d2fc-42fe-bddd-7c3a985094d4" >
+						<ee:message >
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="putOpportunityRequest" ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Put_Opportunity_Request: {
+		ns0#Opportunity_Data: {
+			ns0#Opportunity_ID: payload.Id,
+			ns0#Opportunity_Name: payload.Name,
+			ns0#Opportunity_Status_Reference: {
+				ns0#ID @(ns0#"type": "Opportunity_Status_Code"): "W"
+			},
+			ns0#Currency_Reference: {
+				ns0#ID @(ns0#"type": "Currency_ID"): "USD"
+			},
+			ns0#Customer_Reference: {
+				ns0#ID @(ns0#"type": "Customer_Reference_ID"): payload.AccountId
+			},
+			 (vars.opportunityLineItems map  ns0#Opportunity_Line_Replacement_Data: {
+					ns0#Product_Description: $.Name,
+					ns0#Unit_Cost: $.UnitPrice,
+					ns0#Quantity: $.Quantity
+				
+			})
+			
+		}
+	}
+}]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<workday:invoke doc:name="Invoke" doc:id="d3154f54-3e13-4274-8872-02b3a933a658" config-ref="Workday_Config" service="Revenue_Management" operation="Put_Opportunity" target="putOpportunityResponse">
+						<workday:message >
+							<workday:body ><![CDATA[#[vars.putOpportunityRequest]]]></workday:body>
+						</workday:message>
+					</workday:invoke>
+					<ee:transform doc:name="Prepare opportunity data for update" doc:id="689f29e1-fd5f-4a36-8139-19bedec296a1" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+ns ns0 urn:com.workday/bsvc
+---
+{
+	Id : payload.Id,
+	Workday_Sync__c : true	
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<salesforce:update-single doc:name="Update Opportunity" doc:id="78b93872-e09e-4b2b-a60b-3541a4f2a496" config-ref="Salesforce_Config" type="Opportunity"/>
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete>
+				<ee:transform doc:name="Prepare migration result"
+					doc:id="c84b4bc4-5a65-41c1-9d0c-f1ebd3d8db7a">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output text/plain
+---
+"Migration Report: \n"
+
+++ "\n Time [milliseconds]: " 		++ payload.elapsedTimeInMillis
+++ "\n Total Records: "				++ payload.totalRecords
+++ "\n Successful Records: "		++ payload.successfulRecords
+++ "\n Failed Records: "			++ payload.failedRecords
+++ "\n Loaded Records: "			++ payload.loadedRecords
+++ "\n Processed Records: " 		++ payload.processedRecords]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="Migration process has finished!"
+					doc:id="b7575d38-7dbd-4602-9186-1bbb25234896" message="Migration process has finished: #[payload]" />
+
+			</batch:on-complete>
+		</batch:job>
+</flow>
+
+</mule>
+
+
+        

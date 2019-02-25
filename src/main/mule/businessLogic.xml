@@ -24,7 +24,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 							Id, Name, Phone, ShippingCity, ShippingCountry,
 							ShippingPostalCode, ShippingState, ShippingStreet FROM Account
 							WHERE Id = ':id'</salesforce:salesforce-query>
-						<salesforce:parameters><![CDATA[#[output applicaton/java
+						<salesforce:parameters><![CDATA[#[output application/java
 ---
 {
 	"id" : payload.AccountId
@@ -131,16 +131,14 @@ var sfdcAccount = payload.accountInSFDC
 }]]></ee:set-variable>
 						</ee:variables>
 					</ee:transform>
-					<workday:invoke doc:name="Invoke" doc:id="c8745275-2a01-4fd2-8dc4-53aa54287480" config-ref="Workday_Config" service="Revenue_Management" operation="Submit_Customer" target="submitCustomerResponse">
-						<workday:message >
-							<workday:body ><![CDATA[#[vars.submitCustomerRequest]]]></workday:body>
-						</workday:message>
-					</workday:invoke>
+					<workday:revenue-management operation="Submit_Customer" doc:name="Submit customer" doc:id="ca8c4cce-efd1-4a6b-aa3b-add363e2ac39" config-ref="Workday_Config_version_30" target="submitCustomerResponse">
+						<workday:content ><![CDATA[#[vars.submitCustomerRequest]]]></workday:content>
+					</workday:revenue-management>
 				</batch:step>
 				<batch:step name="createOpportunityStep" doc:id="ff35d45f-9d50-4697-ab9e-5a4551eada4c" >
 					<salesforce:query doc:name="Select OpportunityLineItems from SFDC" doc:id="3adb6246-fbb6-4857-b495-00fd1a6cbfa7" config-ref="Salesforce_Config" target="opportunityLineItems">
 						<salesforce:salesforce-query >SELECT Id,Name,Description,OpportunityId,Quantity,TotalPrice,UnitPrice FROM OpportunityLineItem WHERE OpportunityId = ':id'</salesforce:salesforce-query>
-						<salesforce:parameters ><![CDATA[#[output applicaton/java
+						<salesforce:parameters ><![CDATA[#[output application/java
 ---
 {
 	"id" : payload.Id
@@ -180,11 +178,9 @@ ns ns0 urn:com.workday/bsvc
 }]]></ee:set-variable>
 						</ee:variables>
 					</ee:transform>
-					<workday:invoke doc:name="Invoke" doc:id="d3154f54-3e13-4274-8872-02b3a933a658" config-ref="Workday_Config" service="Revenue_Management" operation="Put_Opportunity" target="putOpportunityResponse">
-						<workday:message >
-							<workday:body ><![CDATA[#[vars.putOpportunityRequest]]]></workday:body>
-						</workday:message>
-					</workday:invoke>
+					<workday:revenue-management operation="Put_Opportunity" doc:name="Put opportunity" doc:id="6402136e-19e4-42cf-a18e-94da7eb04a06" config-ref="Workday_Config_version_30" target="putOpportunityResponse">
+						<workday:content ><![CDATA[#[vars.putOpportunityRequest]]]></workday:content>
+					</workday:revenue-management>
 					<ee:transform doc:name="Prepare opportunity data for update" doc:id="689f29e1-fd5f-4a36-8139-19bedec296a1" >
 						<ee:message >
 							<ee:set-payload ><![CDATA[%dw 2.0

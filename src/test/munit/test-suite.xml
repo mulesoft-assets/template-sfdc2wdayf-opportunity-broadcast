@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:workday="http://www.mulesoft.org/schema/mule/workday"
+	xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/workday http://www.mulesoft.org/schema/mule/workday/current/mule-workday.xsd">
+	<munit:config name="new-test-suite.xml" />
+	<configuration-properties doc:name="Configuration properties"
+		file="mule.test.properties" />
+	<munit:before-test name="test-suiteBefore_Test"
+		description="Before tests actions" doc:id="f46c525a-c12b-446a-ae74-3a3e7c24102f">
+		<set-variable value='#[uuid()[0 to 4]]' doc:name="Set uniqueID variable"
+			doc:id="647bed77-4bf2-4264-be02-48c7110aa310" variableName="uniqueID" />
+		<ee:transform doc:name="Prepare test account data"
+			doc:id="275f2edb-2b07-4fba-af1b-4074323b1f5c">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="testAccount"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	Name: "TestOpportunityAccount" ++ vars.uniqueID,
+	Description: "test account for opportunity",
+	Industry: "Education",
+	NumberOfEmployees: 15000
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<salesforce:create type="Account"
+			doc:name="Create test Account in Salesforce" doc:id="f1f2d01b-9770-4c81-ad41-c8ddb645960a"
+			config-ref="Salesforce_Config">
+			<salesforce:records><![CDATA[#[[vars.testAccount]]]]></salesforce:records>
+		</salesforce:create>
+		<set-variable value="#[payload[0].id]" doc:name="Store account ID"
+			doc:id="258bf72c-e014-4e4a-8f96-b849ba815bbc" variableName="salesforceAccountID" />
+
+		<ee:transform doc:name="Prepare test opportunity data"
+			doc:id="4a603379-4b66-45a4-9c90-e93caec04a93">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="testOpportunity"><![CDATA[%dw 2.0
+output application/java
+---
+{	
+	Name: "testOpportunity1" ++ vars.uniqueID,
+	Amount: 123,
+	Probability: 10,
+    "StageName": "Closed Won",
+    "CloseDate": now(),
+	"AccountId": vars.salesforceAccountId
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<salesforce:create type="Opportunity"
+			doc:name="Create test Opportunities in Salesforce" doc:id="168db33e-6ce9-459f-a778-4fa31c78a0ee"
+			config-ref="Salesforce_Config">
+			<salesforce:records><![CDATA[#[[vars.testOpportunity]]]]></salesforce:records>
+		</salesforce:create>
+		<set-variable value="#[payload[0].id]" doc:name="Set opportunity ID variable"
+			doc:id="4f228cfe-96cd-4f5c-9916-6e3287e24550" variableName="salesforceOpportunityID" />
+		<ee:transform doc:name="Prepare test opportunity product data"
+			doc:id="5dee8ec4-7817-45ca-9564-19675a88e79e">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="testOpportunityProduct"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	PricebookEntryId: p('sfdc.test.PricebookEntryId'),  
+	Description: "testTescription" ++ vars.uniqueID,
+	OpportunityId: payload[0].id,
+	"Quantity": "2.0",
+	UnitPrice : 20
+	
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<salesforce:create doc:name="Create test opportunity product in Salesforce"
+			doc:id="9272783b-6e9b-4965-bff8-4680c22a11ae" config-ref="Salesforce_Config"
+			type="OpportunityLineItem">
+			<salesforce:records><![CDATA[#[[vars.testOpportunityProduct]]]]></salesforce:records>
+		</salesforce:create>
+		<set-variable value="#[payload[0].id]" doc:name="Set opportunity product ID variable"
+			doc:id="8db85a33-d41f-4cbb-8035-558dfd6f3529" variableName="salesforceOpportunityProductID" />
+	</munit:before-test>
+	<munit:test name="test-suiteTest" description="MUnit Test"
+		doc:id="ca4f4a6e-81b9-45c2-a96b-b629691510fd">
+		<munit:execution>
+			<flow-ref doc:name="queryFlow" doc:id="60dd6024-313f-401b-bd5b-d21dbdf308ea"
+				name="queryFlow" />
+			<ee:transform doc:name="Filter of test records"
+				doc:id="7cd2fc03-56c2-45c9-ac0f-5f860dcf4cb6">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload filter ($.Name == vars.testOpportunity.Name)]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<flow-ref doc:name="businessLogicFlow" doc:id="2fb57e4e-8d22-4618-9995-ca174e48f035"
+				name="businessLogicFlow" />
+			<scripting:execute engine="groovy"
+				doc:id="8818aaea-babf-4897-be6c-a47134bb694e" doc:name="Sleep for 40s until the processing is completed"
+				target="sleep">
+				<scripting:code>sleep(40000)</scripting:code>
+			</scripting:execute>
+			<flow-ref doc:name="checkMigratedData" doc:id="b4530660-471d-495d-9da2-9a15940524de"
+				name="checkMigratedData" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert Name of migrated account"
+				doc:id="b108b089-686e-4c99-a8a9-50141d112e5a" expression="#[vars.testAccount.Name]"
+				is="#[MunitTools::equalTo(vars.migratedCustomerName)]" message="Account Name is not equal" />
+			<munit-tools:assert-that doc:name="Assert Name of migrated opportunity"
+				doc:id="b98306d0-4e60-4312-bd45-69969d9d0ec1" expression="#[vars.testOpportunity.Name]"
+				is="#[MunitTools::equalTo(vars.migratedOpportunity.Name)]" message="Opportunity Name is not equal" />
+			<munit-tools:assert-that doc:name="Assert unit price of migrated opportunity"
+				doc:id="94144b8a-07ce-47d5-9702-beb709df6ae7" expression="#[vars.testOpportunityProduct.UnitPrice as String]"
+				is="#[MunitTools::equalTo(vars.migratedOpportunity.Unit_Cost)]"
+				message="Unit price is not equal" />
+		</munit:validation>
+	</munit:test>
+	<sub-flow name="checkMigratedData" doc:id="90168435-5ff9-46fd-8089-cf47b0b2a130">
+		<ee:transform doc:name="Prepare get customer request"
+			doc:id="fa8ce1a9-d07f-4ae4-acc0-26dbe0671473">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Get_Customers_Request: {
+		ns0#Request_References: {
+			ns0#Customer_Reference: {
+				ns0#ID @(ns0#"type": "Customer_Reference_ID" ): vars.salesforceAccountID
+			}
+		},
+		ns0#Response_Group: {
+			ns0#Include_Customer_Data: true
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+			</ee:variables>
+		</ee:transform>
+		<workday:revenue-management doc:name="Get migrated Customer"
+			doc:id="b3950aae-c519-4b7e-94a2-28dfcfa22c16" config-ref="Workday_Config_version_30"
+			operation="Get_Customers">
+		</workday:revenue-management>
+		<ee:transform
+			doc:name="Prepare Get opportunity request and save migrated customer name"
+			doc:id="caf6dd17-c7ef-4114-9d91-7dceea5983c4">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 urn:com.workday/bsvc
+---
+{
+	ns0#Get_Opportunities_Request: {
+		ns0#Request_References: {
+			ns0#Opportunity_Reference: {
+				ns0#ID @(ns0#"type": "Opportunity_Reference_ID" ): vars.salesforceOpportunityID
+			}
+		},
+		ns0#Response_Group: {
+			ns0#Include_Opportunity_Data : true
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="migratedCustomerName" ><![CDATA[%dw 2.0
+output application/java
+---
+payload.Get_Customers_Response.Response_Data.Customer.Customer_Data.Customer_Name]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<workday:revenue-management operation="Get_Opportunities" doc:name="Get migrated Opportunity" doc:id="2d704b06-4094-4a56-bec8-5f85e47e879b" config-ref="Workday_Config_version_30"/>
+		<ee:transform doc:name="Save migrated opportunity" doc:id="cc381af9-596f-48de-b036-f550902ec031" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="migratedOpportunity" ><![CDATA[%dw 2.0
+output application/java
+var opportunityData = payload.Get_Opportunities_Response.Response_Data.Opportunity.Opportunity_Data
+---
+{
+	Name: opportunityData.Opportunity_Name,
+	Quantity: opportunityData.Opportunity_Line_Replacement_Data.Quantity,
+	Unit_Cost: opportunityData.Opportunity_Line_Replacement_Data.Unit_Cost,
+	Product_Description: opportunityData.Opportunity_Line_Replacement_Data.Product_Description
+}
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+<munit:after-test name="test-suiteAfter_Test" description="After tests actions" doc:id="48a9b647-be25-4d79-a2af-6e3a0d04303e" >
+		<salesforce:delete doc:name="Delete source opportunity, account and product" doc:id="879288aa-d5f2-46c3-ba8b-56ab4892b8a5" config-ref="Salesforce_Config">
+				<salesforce:delete-ids><![CDATA[#[[vars.salesforceOpportunityProductID, vars.salesforceOpportunityID, vars.salesforceAccountID]]]]></salesforce:delete-ids>
+			</salesforce:delete>
+	</munit:after-test>
+</mule>

@@ -32,7 +32,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 	<flow name="queryFlow">
 		<os:retrieve key="watermark" objectStore="watermarkStore"
 			target="lastQueryTimestamp" doc:name="Retrieve lastQueryTimestamp">
-			<os:default-value><![CDATA[${watermark.default.expression}]]></os:default-value>
+			<os:default-value><![CDATA[#[p('watermark.default.expression')]]]></os:default-value>
 		</os:retrieve>
 		<salesforce:query doc:name="Select Opportunities from SFDC"
 			doc:id="5de63d1d-1f78-4eec-8ed6-dd7cb05280da" config-ref="Salesforce_Config">
@@ -43,7 +43,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 				Workday_Sync__c = false
 				AND HasOpportunityLineItem = true AND
 				LastModifiedDate &gt; :lastquerytimestamp</salesforce:salesforce-query>
-			<salesforce:parameters><![CDATA[#[output applicaton/java
+			<salesforce:parameters><![CDATA[#[output application/java
 ---
 {
 	"lastquerytimestamp" : vars.lastQueryTimestamp

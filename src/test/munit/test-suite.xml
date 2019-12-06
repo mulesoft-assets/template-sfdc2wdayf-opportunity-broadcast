@@ -159,7 +159,7 @@ ns ns0 urn:com.workday/bsvc
 			</ee:variables>
 		</ee:transform>
 		<workday:revenue-management doc:name="Get migrated Customer"
-			doc:id="b3950aae-c519-4b7e-94a2-28dfcfa22c16" config-ref="Workday_Config_version_30"
+			doc:id="b3950aae-c519-4b7e-94a2-28dfcfa22c16" config-ref="Workday_Config"
 			operation="Get_Customers">
 		</workday:revenue-management>
 		<ee:transform
@@ -190,7 +190,7 @@ output application/java
 payload.Get_Customers_Response.Response_Data.Customer.Customer_Data.Customer_Name]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<workday:revenue-management operation="Get_Opportunities" doc:name="Get migrated Opportunity" doc:id="2d704b06-4094-4a56-bec8-5f85e47e879b" config-ref="Workday_Config_version_30"/>
+		<workday:revenue-management operation="Get_Opportunities" doc:name="Get migrated Opportunity" doc:id="2d704b06-4094-4a56-bec8-5f85e47e879b" config-ref="Workday_Config"/>
 		<ee:transform doc:name="Save migrated opportunity" doc:id="cc381af9-596f-48de-b036-f550902ec031" >
 			<ee:message >
 			</ee:message>

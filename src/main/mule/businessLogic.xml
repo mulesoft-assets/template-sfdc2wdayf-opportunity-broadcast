@@ -131,7 +131,7 @@ var sfdcAccount = payload.accountInSFDC
 }]]></ee:set-variable>
 						</ee:variables>
 					</ee:transform>
-					<workday:revenue-management operation="Submit_Customer" doc:name="Submit customer" doc:id="ca8c4cce-efd1-4a6b-aa3b-add363e2ac39" config-ref="Workday_Config_version_30" target="submitCustomerResponse">
+					<workday:revenue-management operation="Submit_Customer" doc:name="Submit customer" doc:id="ca8c4cce-efd1-4a6b-aa3b-add363e2ac39" config-ref="Workday_Config" target="submitCustomerResponse">
 						<workday:content ><![CDATA[#[vars.submitCustomerRequest]]]></workday:content>
 					</workday:revenue-management>
 				</batch:step>
@@ -178,7 +178,7 @@ ns ns0 urn:com.workday/bsvc
 }]]></ee:set-variable>
 						</ee:variables>
 					</ee:transform>
-					<workday:revenue-management operation="Put_Opportunity" doc:name="Put opportunity" doc:id="6402136e-19e4-42cf-a18e-94da7eb04a06" config-ref="Workday_Config_version_30" target="putOpportunityResponse">
+					<workday:revenue-management operation="Put_Opportunity" doc:name="Put opportunity" doc:id="6402136e-19e4-42cf-a18e-94da7eb04a06" config-ref="Workday_Config" target="putOpportunityResponse">
 						<workday:content ><![CDATA[#[vars.putOpportunityRequest]]]></workday:content>
 					</workday:revenue-management>
 					<ee:transform doc:name="Prepare opportunity data for update" doc:id="689f29e1-fd5f-4a36-8139-19bedec296a1" >
